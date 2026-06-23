@@ -67,7 +67,6 @@ numpy==1.26.4
 openai==2.36.0
 opencv-python==4.13.0.92
 packaging==23.2
-pandas==2.2.1
 pillow==10.4.0
 plotly==5.19.0
 proto-plus==1.28.0
