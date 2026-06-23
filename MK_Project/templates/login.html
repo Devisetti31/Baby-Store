@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaKodal - Login to Your Profile</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}?v=2.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body data-user-authenticated="false" data-user-stars="0" data-user-level="1">
+
+    <header class="navbar">
+        <a href="/" class="logo-container" style="text-decoration: none;">
+            <div class="logo-icon">M</div>
+            <span class="logo-text">Mama<span class="text-pink">Kodal</span></span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="/" class="nav-item">Home</a>
+            <a href="{% url 'collections' %}" class="nav-item">Collections</a>
+            <a href="{% url 'new_arrivals' %}" class="nav-item">New Arrivals</a>
+            <a href="{% url 'reviews' %}" class="nav-item">Reviews</a>
+            <a href="{% url 'about' %}" class="nav-item">About Us</a>
+            <a href="{% url 'contact' %}" class="nav-item">Contact</a>
+        </nav>
+
+        <div class="action-container">
+            <a href="{% url 'cart' %}" class="cart-btn" aria-label="Cart">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>
+            </a>
+            <a href="{% url 'login' %}" class="profile-btn active" style="text-decoration: none;">Login</a>
+        </div>
+    </header>
+
+    <main class="contact-page-container bg-page-contact-cart page-transition-wrapper" style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px;">
+        <div class="contact-form-panel" style="max-width: 500px; width: 100%; margin: 0 auto; box-sizing: border-box;">
+            <div style="text-align: center; margin-bottom: 24px;">
+                <span style="font-size: 48px;">🌟</span>
+                <h1 class="main-page-heading" style="font-size: 32px !important; margin-top: 10px; margin-bottom: 8px;">Welcome Back!</h1>
+                <p style="color: var(--text-secondary); font-size: 15px; font-weight: 500;">Login to check your explorer rewards and order details.</p>
+            </div>
+
+            {% if form.errors %}
+                <div style="background-color: var(--primary-light); color: var(--primary-dark); padding: 12px 16px; border-radius: var(--radius-sm); margin-bottom: 20px; font-size: 14px; font-weight: 600; border-left: 4px solid var(--primary);">
+                    Please check your username and password.
+                </div>
+            {% endif %}
+
+            <form method="POST" class="brand-contact-form" id="login-form">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ next }}">
+                
+                <!-- Hidden inputs to sync stars from localStorage to database on login -->
+                <input type="hidden" name="local_stars" id="id_local_stars" value="0">
+                <input type="hidden" name="local_level" id="id_local_level" value="1">
+
+                <div class="input-field-group">
+                    <label for="id_username">Username</label>
+                    <input type="text" id="id_username" name="username" placeholder="Enter your username" required autocomplete="username">
+                </div>
+
+                <div class="input-field-group">
+                    <label for="id_password">Password</label>
+                    <input type="password" id="id_password" name="password" placeholder="Enter your password" required autocomplete="current-password" style="font-family: var(--font-body); font-weight: 600; font-size: 14px; color: var(--text-primary); background-color: var(--bg-main); border: 1px solid var(--border-color); padding: 14px 18px; border-radius: var(--radius-sm); outline: none; transition: all 0.2s ease; width: 100%;">
+                </div>
+
+                <button type="submit" class="form-submit-btn" style="width: 100%; text-align: center; justify-content: center; display: block; box-sizing: border-box; margin-top: 10px;">
+                    Log In &rarr;
+                </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 24px; font-size: 14px; font-weight: 600; color: var(--text-secondary);">
+                Don't have an account yet? 
+                <a href="{% url 'register' %}" style="color: var(--primary-dark); text-decoration: none; font-weight: 700; margin-left: 4px;">Sign Up Now</a>
+            </div>
+        </div>
+    </main>
+
+    {% include 'footer.html' %}
+
+    <script src="{% static 'kids-interactive.js' %}?v=2.0"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Populate hidden fields from localStorage to sync stars/level on login
+            const localStars = localStorage.getItem('mamakodal_stars') || '0';
+            const localLevel = localStorage.getItem('mamakodal_level') || '1';
+            
+            document.getElementById('id_local_stars').value = localStars;
+            document.getElementById('id_local_level').value = localLevel;
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,231 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Placed Successfully! - MamaKodal</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}?v=2.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body data-user-authenticated="{% if user.is_authenticated %}true{% else %}false{% endif %}" data-user-stars="{% if user.is_authenticated %}{{ user.profile.stars }}{% else %}0{% endif %}" data-user-level="{% if user.is_authenticated %}{{ user.profile.level }}{% else %}1{% endif %}">
+
+    <header class="navbar">
+        <a href="/" class="logo-container" style="text-decoration: none;">
+            <div class="logo-icon">M</div>
+            <span class="logo-text">Mama<span class="text-pink">Kodal</span></span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="/" class="nav-item">Home</a>
+            <a href="{% url 'collections' %}" class="nav-item">Collections</a>
+            <a href="{% url 'new_arrivals' %}" class="nav-item">New Arrivals</a>
+            <a href="{% url 'reviews' %}" class="nav-item">Reviews</a>
+            <a href="{% url 'about' %}" class="nav-item">About Us</a>
+            <a href="{% url 'contact' %}" class="nav-item">Contact</a>
+        </nav>
+
+        <div class="action-container">
+            <a href="{% url 'cart' %}" class="cart-btn" aria-label="Cart">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>
+            </a>
+            {% if user.is_authenticated %}
+            <div class="dropdown-wrapper">
+                <a href="{% url 'profile' %}" class="profile-btn" style="text-decoration: none;">
+                    {{ user.profile.avatar }} Profile
+                </a>
+                <div class="dropdown-menu">
+                    <div class="dropdown-inner">
+                        <a href="{% url 'profile' %}">Dashboard</a>
+                        <a href="{% url 'logout' %}">Log Out</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <a href="{% url 'login' %}" class="profile-btn" style="text-decoration: none;">Login</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="cart-page-container bg-page-contact-cart page-transition-wrapper"
+        style="min-height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-top: 40px; padding-bottom: 80px;">
+
+        <div class="page-title-box" style="text-align: center;">
+            <div class="logo-icon"
+                style="width: 80px; height: 80px; font-size: 40px; margin: 0 auto 24px auto; background-color: var(--accent-green); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(112, 224, 0, 0.3); animation: brandItemFloat 4s ease-in-out infinite;">
+                🎉</div>
+            <h1 class="main-page-heading" style="margin-bottom: 12px;">Order Placed Successfully!</h1>
+            <p class="page-subheading" style="max-width: 600px; margin: 0 auto;">Your order is successfully placed.
+                Thank you for your shopping! Your package of joy will be wrapped with love and shipped shortly.</p>
+        </div>
+
+        <div style="max-width: 550px; width: 100%; margin: 30px auto 0 auto; padding: 36px; border-radius: var(--radius-lg);"
+            class="white-card">
+            <div style="width: 100%; display: flex; flex-direction: column; gap: 20px;">
+                <h2
+                    style="font-family: var(--font-heading); font-size: 22px; color: var(--primary-dark); text-align: center; border-bottom: 2px dashed rgba(255, 71, 126, 0.15); padding-bottom: 12px; margin-bottom: 10px;">
+                    📦 Order Information</h2>
+
+                <div
+                    style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 600; color: var(--text-secondary);">
+                    <span>Order Reference:</span>
+                    <span style="font-family: monospace; font-size: 16px; font-weight: 700; color: var(--text-primary);"
+                        id="order-ref-val">MK-849204</span>
+                </div>
+
+                <div
+                    style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 600; color: var(--text-secondary);">
+                    <span>Order Date:</span>
+                    <span style="color: var(--text-primary); font-weight: 700;" id="order-date-val">June 11, 2026</span>
+                </div>
+
+                <div
+                    style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 600; color: var(--text-secondary);">
+                    <span>Estimated Delivery:</span>
+                    <span style="color: var(--secondary-dark); font-weight: 700;">3 - 5 Business Days</span>
+                </div>
+
+                <div
+                    style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 600; color: var(--text-secondary);">
+                    <span>Status:</span>
+                    <span
+                        style="background-color: var(--primary-light); color: var(--primary-dark); padding: 4px 12px; border-radius: var(--radius-full); font-size: 11px; font-weight: 700; text-transform: uppercase;">Preparing
+                        Shipment</span>
+                </div>
+
+                <hr style="border: none; border-top: 1px solid rgba(240, 233, 223, 0.6); margin: 8px 0;">
+
+                <div style="text-align: center; margin: 5px 0;">
+                    <p style="font-size: 13px; font-weight: 600; color: var(--text-secondary); line-height: 1.5;">✨
+                        Click anywhere on the screen for a magical celebration! ✨</p>
+                </div>
+
+                <div style="display: flex; gap: 16px; width: 100%; justify-content: center; margin-top: 10px;">
+                    <a href="/" class="btn-primary"
+                        style="text-decoration: none; font-size: 14px; padding: 12px 24px;">Back to Home</a>
+                    <a href="{% url 'collections' %}" class="btn-secondary"
+                        style="text-decoration: none; font-size: 14px; padding: 12px 24px;">Continue Shopping</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {% include 'footer.html' %}
+
+    <script src="{% static 'kids-interactive.js' %}?v=2.0"></script>
+    <script>
+        // Generate random order ID and date on load
+        document.addEventListener("DOMContentLoaded", () => {
+            const orderRef = document.getElementById("order-ref-val");
+            const orderDate = document.getElementById("order-date-val");
+
+            // Random 6 digits
+            const randomDigits = Math.floor(100000 + Math.random() * 900000);
+            if (orderRef) {
+                orderRef.textContent = `MK-${randomDigits}`;
+            }
+
+            // Today's date
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            if (orderDate) {
+                orderDate.textContent = new Date().toLocaleDateString('en-US', options);
+            }
+
+            // Trigger first burst of sparkles
+            setTimeout(() => {
+                spawnCelebrationConfetti();
+            }, 600);
+        });
+
+        function spawnCelebrationConfetti() {
+            const emojis = ['🎉', '🎈', '⭐', '✨', '🦄', '🦖', '🍭', '🌈'];
+            const container = document.body;
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+
+            for (let i = 0; i < 35; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'sparkle-particle';
+                particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+                const x = screenWidth / 2;
+                const y = screenHeight / 2 - 50;
+
+                const tx = (Math.random() - 0.5) * 450;
+                const ty = (Math.random() - 0.5) * 450 - 50;
+                const rot = (Math.random() - 0.5) * 720;
+                const scaleEnd = 1.0 + Math.random() * 0.8;
+                const duration = 0.8 + Math.random() * 0.8;
+
+                particle.style.setProperty('--tx', `${tx}px`);
+                particle.style.setProperty('--ty', `${ty}px`);
+                particle.style.setProperty('--rot', `${rot}deg`);
+                particle.style.setProperty('--scale-end', scaleEnd);
+                particle.style.setProperty('--duration', `${duration}s`);
+
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                particle.style.position = 'fixed';
+                particle.style.pointerEvents = 'none';
+                particle.style.zIndex = '9999';
+                particle.style.fontSize = '24px';
+
+                container.appendChild(particle);
+
+                setTimeout(() => {
+                    particle.remove();
+                }, duration * 1000);
+            }
+        }
+
+        // Add a click handler to trigger sounds and extra fireworks
+        document.addEventListener('click', (e) => {
+            // Find existing KidsInteractivity instance if available
+            // Since it instantiates automatically, it is running.
+            // Spawning a few celebratory particles under cursor:
+            const emojis = ['✨', '🎈', '⭐', '🎉', '🦖', '🦄'];
+            for (let i = 0; i < 12; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'sparkle-particle';
+                particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+                const tx = (Math.random() - 0.5) * 200;
+                const ty = (Math.random() - 0.5) * 200;
+                const rot = (Math.random() - 0.5) * 360;
+                const scaleEnd = 1.2;
+                const duration = 0.6 + Math.random() * 0.4;
+
+                particle.style.setProperty('--tx', `${tx}px`);
+                particle.style.setProperty('--ty', `${ty}px`);
+                particle.style.setProperty('--rot', `${rot}deg`);
+                particle.style.setProperty('--scale-end', scaleEnd);
+                particle.style.setProperty('--duration', `${duration}s`);
+
+                particle.style.left = `${e.clientX}px`;
+                particle.style.top = `${e.clientY}px`;
+                particle.style.position = 'fixed';
+                particle.style.pointerEvents = 'none';
+                particle.style.zIndex = '9999';
+                particle.style.fontSize = '20px';
+
+                document.body.appendChild(particle);
+
+                setTimeout(() => {
+                    particle.remove();
+                }, duration * 1000);
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaKodal - About Our Journey</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}?v=2.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body data-user-authenticated="{% if user.is_authenticated %}true{% else %}false{% endif %}" data-user-stars="{% if user.is_authenticated %}{{ user.profile.stars }}{% else %}0{% endif %}" data-user-level="{% if user.is_authenticated %}{{ user.profile.level }}{% else %}1{% endif %}">
+
+    <header class="navbar">
+        <div class="logo-container">
+            <div class="logo-icon">M</div>
+            <span class="logo-text">Mama<span class="text-pink">Kodal</span></span>
+        </div>
+
+        <nav class="nav-links">
+            <a href="/" class="nav-item">Home</a>
+            <a href="{% url 'collections' %}" class="nav-item">Collections</a>
+            <a href="{% url 'new_arrivals' %}" class="nav-item">New Arrivals</a>
+            <a href="{% url 'reviews' %}" class="nav-item">Reviews</a>
+            <a href="{% url 'about' %}" class="nav-item">About Us</a>
+            <a href="{% url 'contact' %}" class="nav-item">Contact</a>
+
+        </nav>
+
+        <div class="action-container">
+            <a href="{% url 'cart' %}" class="cart-btn" aria-label="Cart">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>
+            </a>
+            {% if user.is_authenticated %}
+            <div class="dropdown-wrapper">
+                <a href="{% url 'profile' %}" class="profile-btn" style="text-decoration: none;">
+                    {{ user.profile.avatar }} Profile
+                </a>
+                <div class="dropdown-menu">
+                    <div class="dropdown-inner">
+                        <a href="{% url 'profile' %}">Dashboard</a>
+                        <a href="{% url 'logout' %}">Log Out</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <a href="{% url 'login' %}" class="profile-btn" style="text-decoration: none;">Login</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="about-page-container bg-page-about page-transition-wrapper">
+
+        <section class="about-hero">
+            <div class="badge-tag">🌱 Our Story</div>
+            <h1 class="main-page-heading">Made for Tiny Humans, Built by Grateful Parents</h1>
+            <p class="page-subheading">We believe childhood should be magical, comfortable, and safe. MamaKodal was born
+                out of a simple desire to bring premium care to everyday growing essentials.</p>
+        </section>
+
+        <section class="story-split-layout">
+            <div class="story-text-block">
+                <h2>How It All Started</h2>
+                <p>
+                    Like most parents, we found ourselves searching endlessly for children's apparel and toys that
+                    balanced premium skin-safe organic textiles with durable structural engineering. We noticed a gap
+                    between bright creative toys and safe, toxin-free compositions.
+                </p>
+                <p>
+                    That is when MamaKodal was imagined. What started as a small, curated passion project quickly grew
+                    into a trusted home marketplace. Today, we handle everything from soft knit sweaters and easy velcro
+                    sneakers to educational magnetic tiles—ensuring that every delivery brings a smile to both parent
+                    and child.
+                </p>
+            </div>
+
+            <div class="story-graphic-panel">
+                <div class="about-white-card">
+                    <div class="about-illustration-box">
+                        <img src="{% static 'images/kid.png' %}" alt="Happy children with balloons mockup asset">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="values-section">
+            <div class="section-title-centered">
+                <h2>The Values We Live By</h2>
+                <p>Every dress we stitch and toy we select goes through strict baseline quality filters.</p>
+            </div>
+
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon bg-light-pink">🛡️</div>
+                    <h3>Uncompromising Safety</h3>
+                    <p>From nickel-free clothing snaps to organic chemical-free fabrics and non-toxic toy paint
+                        finishes, safety is never up for negotiation.</p>
+                </div>
+
+                <div class="value-card">
+                    <div class="value-icon bg-light-blue">☁️</div>
+                    <h3>Cloud-Like Comfort</h3>
+                    <p>Children are constantly active. Our garments use tagless necklines and premium stretch seams
+                        designed to let your little adventurers move without irritation.</p>
+                </div>
+
+                <div class="value-card">
+                    <div class="value-icon bg-light-purple">🎨</div>
+                    <h3>Purposeful Play</h3>
+                    <p>Our games and toys don't just occupy space—they inspire spatial logic, creative construction
+                        milestones, and fine motor skills.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-banner">
+            <div class="stat-item">
+                <span class="stat-num">99%</span>
+                <span class="stat-label">Happy Parents Rating</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">150k+</span>
+                <span class="stat-label">Packages Shipped Home</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num">100%</span>
+                <span class="stat-label">Toxin-Free Materials</span>
+            </div>
+        </section>
+
+        <section class="about-cta-footer">
+            <h2>Ready to find your next favorite treasure?</h2>
+            <p>Explore our carefully crafted product collections and newly arrived releases.</p>
+            <div class="about-cta-buttons">
+                <a href="{% url 'collections' %}" class="btn-primary">Explore Collections</a>
+                <a href="{% url 'new_arrivals' %}" class="btn-primary">New Arrivals</a>
+            </div>
+        </section>
+
+    </main>
+
+    {% include 'footer.html' %}
+
+    <script src="{% static 'kids-interactive.js' %}?v=2.0"></script>
+</body>
+
+</html>

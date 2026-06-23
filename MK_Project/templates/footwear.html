@@ -1,0 +1,347 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaKodal - Magical Footwear Playground</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}?v=2.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body data-user-authenticated="{% if user.is_authenticated %}true{% else %}false{% endif %}"
+    data-user-stars="{% if user.is_authenticated %}{{ user.profile.stars }}{% else %}0{% endif %}"
+    data-user-level="{% if user.is_authenticated %}{{ user.profile.level }}{% else %}1{% endif %}">
+
+    <header class="navbar">
+        <div class="logo-container">
+            <div class="logo-icon">M</div>
+            <span class="logo-text">Mama<span class="text-pink">Kodal</span></span>
+        </div>
+
+        <nav class="nav-links">
+            <a href="/" class="nav-item">Home</a>
+            <a href="{% url 'collections' %}" class="nav-item">Collections</a>
+            <a href="{% url 'new_arrivals' %}" class="nav-item">New Arrivals</a>
+            <a href="#slippers" class="nav-item">Slippers</a>
+            <a href="#shoes" class="nav-item">Shoes</a>
+            <a href="#socks" class="nav-item">Socks</a>
+        </nav>
+
+        <div class="action-container">
+            <a href="{% url 'cart' %}" class="cart-btn" aria-label="Cart">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>
+            </a>
+            {% if user.is_authenticated %}
+            <div class="dropdown-wrapper">
+                <a href="{% url 'profile' %}" class="profile-btn" style="text-decoration: none;">
+                    {{ user.profile.avatar }} Profile
+                </a>
+                <div class="dropdown-menu">
+                    <div class="dropdown-inner">
+                        <a href="{% url 'profile' %}">Dashboard</a>
+                        <a href="{% url 'logout' %}">Log Out</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <a href="{% url 'login' %}" class="profile-btn" style="text-decoration: none;">Login</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="about-page-container page-transition-wrapper">
+
+        <div style="text-align: left; margin-bottom: 50px;">
+            <div class="badge-tag">👟 Happy Feet</div>
+            <h1 class="main-page-heading" style="margin-bottom: 12px;">The Footwear Kingdom!</h1>
+            <p style="font-size: 20px; color: var(--text-secondary); font-weight: 700; max-width: 700px;">
+                Happy steps, jumpy soles, and colorful socks engineered strictly for little running feet!
+            </p>
+        </div>
+
+
+        <!-- SLIPPERS SECTION -->
+        <section id="slippers" style="margin-bottom: 90px;">
+            <div
+                style="margin-bottom: 32px; display: flex; align-items: center; justify-content: flex-start; gap: 16px; text-align: left;">
+                <span class="value-icon card-blue"
+                    style="width: 50px; height: 50px; border: 3px solid var(--text-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">🩴</span>
+                <h2 class="section-title"
+                    style="margin: 0; text-align: left; font-family: var(--font-heading); font-size: 48px; text-shadow: 3px 3px 0px var(--accent-blue-light);">
+                    Cozy Slippers
+                </h2>
+            </div>
+
+            <div class="product-four-column-grid">
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1594150878496-a921e5af8907?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Q296eSUyMEZsZWVjZSUyMEJvb3RpZXN8ZW58MHx8MHx8fDA%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Cozy Fleece Booties">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--secondary);">Slippers</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Cozy Fleece Booties</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.1299</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--secondary); box-shadow: 0 6px 0px var(--secondary-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1728372923987-15d70bc4946a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fEJ1bm55JTIwRWFycyUyMFNsaXBwZXJzfGVufDB8fDB8fHww"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Bunny Ears Slippers">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--secondary);">Slippers</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Bunny Ears Slippers</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.899</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--secondary); box-shadow: 0 6px 0px var(--secondary-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://plus.unsplash.com/premium_photo-1703622846437-d99b08a906b0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8U2xpcHBlcnN8ZW58MHx8MHx8fDA%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Teddy Plush Slippers">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--secondary);">Slippers</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Teddy Plush Slippers</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.799</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--secondary); box-shadow: 0 6px 0px var(--secondary-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1627388484741-74dcc56ec343?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTF8fENsb3VkJTIwU2xpZGUlMjBTbGlwcGVyc3xlbnwwfHwwfHx8MA%3D%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Cloud Slide Slippers">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--secondary);">Slippers</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Cloud Slide Slippers</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.999</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--secondary); box-shadow: 0 6px 0px var(--secondary-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SHOES SECTION -->
+        <section id="shoes" style="margin-bottom: 90px;">
+            <div
+                style="margin-bottom: 32px; display: flex; align-items: center; justify-content: flex-start; gap: 16px; text-align: left;">
+                <span class="value-icon card-pink"
+                    style="width: 50px; height: 50px; border: 3px solid var(--text-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">👟</span>
+                <h2 class="section-title"
+                    style="margin: 0; text-align: left; font-family: var(--font-heading); font-size: 48px; text-shadow: 3px 3px 0px var(--primary-light);">
+                    Playground Shoes
+                </h2>
+            </div>
+
+            <div class="product-four-column-grid">
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1686067776426-9646eb4b5796?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8TGlnaHQtdXAlMjBMRUQlMjBTbmVha2Vyc3xlbnwwfHwwfHx8MA%3D%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Light-up LED Sneakers">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category text-pink">Shoes</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Light-up LED Sneakers</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.1999</span>
+                            <button class="add-to-cart-btn" style="padding: 10px 20px; font-size: 14px;">Add 🎒</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1602591987862-3c3326d6b07d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzV8fEFjdGl2ZSUyMEp1bXBlciUyMFNob2VzfGVufDB8fDB8fHww"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Active Jumper Running Shoes">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category text-pink">Shoes</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Active Jumper Shoes</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.1499</span>
+                            <button class="add-to-cart-btn" style="padding: 10px 20px; font-size: 14px;">Add 🎒</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1517649357390-d11df376d303?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8TGl0dGxlJTIwRXhwbG9yZXIlMjBCb290c3xlbnwwfHwwfHx8MA%3D%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Little Explorer Boots">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category text-pink">Shoes</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Little Explorer Boots</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.999</span>
+                            <button class="add-to-cart-btn" style="padding: 10px 20px; font-size: 14px;">Add 🎒</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1591175359473-ea9d54598f90?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8UmFpbmJvdyUyMENhbnZhcyUyMFNuZWFrZXJ8ZW58MHx8MHx8fDA%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Rainbow Canvas Sneakers">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category text-pink">Shoes</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Rainbow Canvas Sneaker</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.999</span>
+                            <button class="add-to-cart-btn" style="padding: 10px 20px; font-size: 14px;">Add 🎒</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- SOCKS SECTION -->
+        <section id="socks" style="margin-bottom: 30px;">
+            <div
+                style="margin-bottom: 32px; display: flex; align-items: center; justify-content: flex-start; gap: 16px; text-align: left;">
+                <span class="value-icon card-green"
+                    style="width: 50px; height: 50px; border: 3px solid var(--text-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">🧦</span>
+                <h2 class="section-title"
+                    style="margin: 0; text-align: left; font-family: var(--font-heading); font-size: 48px; text-shadow: 3px 3px 0px var(--accent-green-light);">
+                    Happy Socks
+                </h2>
+            </div>
+
+            <div class="product-four-column-grid">
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1514606991149-0c4c31d4e521?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8QW5pbWFsJTIwRmFjZSUyMEdyaXAlMjBTb2Nrc3xlbnwwfHwwfHx8MA%3D%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Animal Face Grip Socks">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--accent-green-dark);">Socks</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Animal Face Grip Socks</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.100</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--accent-green); box-shadow: 0 6px 0px var(--accent-green-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://plus.unsplash.com/premium_photo-1771344247940-fb379b7c0964?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjF8fFJhaW5ib3clMjBTdHJpcGUlMjBTb2Nrc3xlbnwwfHwwfHx8MA%3D%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Rainbow Stripe Crew Socks">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--accent-green-dark);">Socks</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Rainbow Stripe Socks</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.149</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--accent-green); box-shadow: 0 6px 0px var(--accent-green-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1585844758091-a4fb5624d02d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fENvenklMjBGdXp6eSUyMFdpbnRlciUyMFNvY2tzfGVufDB8fDB8fHww"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Cozy Fuzzy Winter Socks">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--accent-green-dark);">Socks</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Cozy Fuzzy Winter Socks</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.199</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--accent-green); box-shadow: 0 6px 0px var(--accent-green-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1708661758229-fb1e73852b91?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8RGlubyUyMEZvb3RwcmludCUyMFNvY2tzfGVufDB8fDB8fHww"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Dino Footprint Socks">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--accent-green-dark);">Socks</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Dino Footprint Socks</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.89</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--accent-green); box-shadow: 0 6px 0px var(--accent-green-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    {% include 'footer.html' %}
+
+    <script src="{% static 'kids-interactive.js' %}?v=2.0"></script>
+</body>
+
+</html>

@@ -1,0 +1,411 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaKodal - Customer Reviews</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}?v=2.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body data-user-authenticated="{% if user.is_authenticated %}true{% else %}false{% endif %}" data-user-stars="{% if user.is_authenticated %}{{ user.profile.stars }}{% else %}0{% endif %}" data-user-level="{% if user.is_authenticated %}{{ user.profile.level }}{% else %}1{% endif %}">
+
+    <header class="navbar">
+        <div class="logo-container">
+            <div class="logo-icon">M</div>
+            <span class="logo-text">Mama<span class="text-pink">Kodal</span></span>
+        </div>
+
+        <nav class="nav-links">
+            <a href="/" class="nav-item">Home</a>
+            <a href="{% url 'collections' %}" class="nav-item">Collections</a>
+            <a href="{% url 'new_arrivals' %}" class="nav-item">New Arrivals</a>
+            <a href="{% url 'reviews' %}" class="nav-item">Reviews</a>
+            <a href="{% url 'about' %}" class='nav-item'> About Us</a>
+            <a href="{% url 'contact' %}" class='nav-item'> Contact </a>
+
+
+
+        </nav>
+
+        <div class="action-container">
+            <a href="{% url 'cart' %}" class="cart-btn" aria-label="Cart">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>
+            </a>
+            {% if user.is_authenticated %}
+            <div class="dropdown-wrapper">
+                <a href="{% url 'profile' %}" class="profile-btn" style="text-decoration: none;">
+                    {{ user.profile.avatar }} Profile
+                </a>
+                <div class="dropdown-menu">
+                    <div class="dropdown-inner">
+                        <a href="{% url 'profile' %}">Dashboard</a>
+                        <a href="{% url 'logout' %}">Log Out</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <a href="{% url 'login' %}" class="profile-btn" style="text-decoration: none;">Login</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="reviews-page-container bg-page-reviews page-transition-wrapper">
+
+        <div class="reviews-hero-section">
+            <h1 class="main-page-heading">Words from Mama & Papa</h1>
+            <p class="page-subheading">Nothing makes us happier than seeing your little ones thrive in comfort. Here is
+                what our global parent community has to say.</p>
+        </div>
+
+        <div class="rating-dashboard-card">
+            <div class="score-summary-block">
+                <h2 class="giant-rating-num">4.9</h2>
+                <div class="stars-row-gold">⭐⭐⭐⭐⭐</div>
+                <p class="total-reviews-count">Based on 1,420 genuine reviews</p>
+            </div>
+
+            <div class="rating-bars-breakdown">
+                <div class="breakdown-row">
+                    <span class="star-label">5 Star</span>
+                    <div class="progress-bar-bg">
+                        <div class="progress-fill-fill" style="width: 92%;"></div>
+                    </div>
+                    <span class="percentage-label">92%</span>
+                </div>
+                <div class="breakdown-row">
+                    <span class="star-label">4 Star</span>
+                    <div class="progress-bar-bg">
+                        <div class="progress-fill-fill" style="width: 6%;"></div>
+                    </div>
+                    <span class="percentage-label">6%</span>
+                </div>
+                <div class="breakdown-row">
+                    <span class="star-label">3 Star</span>
+                    <div class="progress-bar-bg">
+                        <div class="progress-fill-fill" style="width: 2%;"></div>
+                    </div>
+                    <span class="percentage-label">2%</span>
+                </div>
+                <div class="breakdown-row">
+                    <span class="star-label">2 Star</span>
+                    <div class="progress-bar-bg">
+                        <div class="progress-fill-fill" style="width: 0%;"></div>
+                    </div>
+                    <span class="percentage-label">0%</span>
+                </div>
+            </div>
+
+            <div class="share-opinion-block">
+                <h3>Shared your experience?</h3>
+                <p>Your feedback helps us craft safer, cozier, and better products for kids everywhere.</p>
+                <button class="write-review-btn">Write a Review</button>
+            </div>
+        </div>
+
+        <!-- NEW REVIEW FORM CONTAINER -->
+        <div id="write-review-container" class="contact-form-panel" style="display: none; margin-bottom: 48px; animation: cloudFloatIntro 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;">
+            <h2 style="font-family: var(--font-heading); font-size: 26px; color: var(--text-primary); margin-bottom: 24px; border-bottom: 2px dashed rgba(255, 71, 126, 0.15); padding-bottom: 12px;">Share Your Experience</h2>
+            <form id="submit-review-form" class="brand-contact-form">
+                <div class="form-input-row-split">
+                    <div class="input-field-group">
+                        <label for="review-author-name">Your Name</label>
+                        <input type="text" id="review-author-name" placeholder="E.g., Ananya P." required value="{% if user.is_authenticated %}{{ user.first_name }} {{ user.last_name }}{% endif %}">
+                    </div>
+                    <div class="input-field-group">
+                        <label for="review-rating-stars">Star Rating</label>
+                        <div class="select-dropdown-wrapper">
+                            <select id="review-rating-stars" required style="width: 100%;">
+                                <option value="5" selected>⭐⭐⭐⭐⭐ (5 Stars)</option>
+                                <option value="4">⭐⭐⭐⭐ (4 Stars)</option>
+                                <option value="3">⭐⭐⭐ (3 Stars)</option>
+                                <option value="2">⭐⭐ (2 Stars)</option>
+                                <option value="1">⭐ (1 Star)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-input-row-split" style="margin-top: 20px;">
+                    <div class="input-field-group">
+                        <label for="review-title">Review Title</label>
+                        <input type="text" id="review-title" placeholder="E.g., Beautiful design and soft fabric!" required>
+                    </div>
+                    <div class="input-field-group">
+                        <label for="review-purchased-item">Product Purchased</label>
+                        <input type="text" id="review-purchased-item" placeholder="E.g., Rainbow Tutu Dress" required>
+                    </div>
+                </div>
+
+                <div class="input-field-group" style="margin-top: 20px;">
+                    <label for="review-text-message">Your Review Details</label>
+                    <textarea id="review-text-message" rows="4" placeholder="Tell other parents about quality, sizing, comfort, and how your little one liked it..." required></textarea>
+                </div>
+
+                <div style="display: flex; gap: 16px; margin-top: 28px;">
+                    <button type="submit" class="form-submit-btn" style="margin-top: 0;">Submit Review &rarr;</button>
+                    <button type="button" id="cancel-review-btn" class="btn-secondary" style="padding: 14px 28px; border-radius: var(--radius-sm); font-size: 15px;">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="reviews-filter-chips-bar">
+            <button class="filter-chip active">All Reviews (1,420)</button>
+            <button class="filter-chip">With Photos (412)</button>
+            <button class="filter-chip">Clothes (680)</button>
+            <button class="filter-chip">Toys & Games (210)</button>
+            <button class="filter-chip">Footwear (118)</button>
+        </div>
+
+        <div class="reviews-masonry-grid">
+
+            <div class="review-item-card border-pink-top">
+                <div class="review-card-header">
+                    <div class="user-avatar bg-avatar-pink">AP</div>
+                    <div class="user-meta-info">
+                        <h4>Ananya P.</h4>
+                        <span class="verified-buyer-tag">✓ Verified Parent</span>
+                    </div>
+                    <span class="review-date">Yesterday</span>
+                </div>
+                <div class="card-stars">⭐⭐⭐⭐⭐</div>
+                <h4 class="review-card-title">Absolutely adorable and soft!</h4>
+                <p class="review-body-text">
+                    Bought the Rainbow Tutu Dress for my daughter's 3rd birthday party. I was worried the tulle might
+                    scratch her skin, but the cotton bodice inside is incredibly soft and stretchy. She didn't want to
+                    take it off all evening!
+                </p>
+                <span class="purchased-item-label">Purchased: <strong class="text-pink">Rainbow Tutu
+                        Dress</strong></span>
+            </div>
+
+            <div class="review-item-card border-blue-top">
+                <div class="review-card-header">
+                    <div class="user-avatar bg-avatar-blue">RK</div>
+                    <div class="user-meta-info">
+                        <h4>Rahul K.</h4>
+                        <span class="verified-buyer-tag">✓ Verified Parent</span>
+                    </div>
+                    <span class="review-date">4 days ago</span>
+                </div>
+                <div class="card-stars">⭐⭐⭐⭐⭐</div>
+                <h4 class="review-card-title">Sturdy shoes, very easy velcro</h4>
+                <p class="review-body-text">
+                    Getting shoes onto a toddler is a workout by itself, but these Cloud Slip-Ons are amazing. The wide
+                    velcro opening makes it easy to slip his feet right in, and the soles have great grip for playground
+                    running.
+                </p>
+                <span class="purchased-item-label">Purchased: <strong class="text-pink">Cloud Slip-Ons</strong></span>
+            </div>
+
+            <div class="review-item-card border-yellow-top">
+                <div class="review-card-header">
+                    <div class="user-avatar bg-avatar-yellow">MS</div>
+                    <div class="user-meta-info">
+                        <h4>Meera S.</h4>
+                        <span class="verified-buyer-tag">✓ Verified Parent</span>
+                    </div>
+                    <span class="review-date">1 week ago</span>
+                </div>
+                <div class="card-stars">⭐⭐⭐⭐⭐</div>
+                <h4 class="review-card-title">Keeps him busy for hours</h4>
+                <p class="review-body-text">
+                    The 3D Magnetic Tiles set has been a total lifesaver. The colors are beautiful when the light shines
+                    through them, and the magnets are powerful enough to build tall castles without crumbling down.
+                    Highly recommend!
+                </p>
+                <span class="purchased-item-label">Purchased: <strong class="text-pink">3D Magnetic
+                        Tiles</strong></span>
+            </div>
+
+            <div class="review-item-card border-purple-top">
+                <div class="review-card-header">
+                    <div class="user-avatar bg-avatar-purple">DV</div>
+                    <div class="user-meta-info">
+                        <h4>Deepika V.</h4>
+                        <span class="verified-buyer-tag">✓ Verified Parent</span>
+                    </div>
+                    <span class="review-date">2 weeks ago</span>
+                </div>
+                <div class="card-stars">⭐⭐⭐⭐</div>
+                <h4 class="review-card-title">Excellent lunch bag sizing</h4>
+                <p class="review-body-text">
+                    The Bento Lunch Bag fits his bento box, fruit snack box, and a small water bottle perfectly without
+                    breaking a sweat. It washes clean easily in the machine too. Shipped a day late, but the quality
+                    made up for it!
+                </p>
+                <span class="purchased-item-label">Purchased: <strong class="text-pink">Sprout Bento Lunch
+                        Bag</strong></span>
+            </div>
+
+            <div class="review-item-card border-pink-top">
+                <div class="review-card-header">
+                    <div class="user-avatar bg-avatar-pink">SN</div>
+                    <div class="user-meta-info">
+                        <h4>Saritha N.</h4>
+                        <span class="verified-buyer-tag">✓ Verified Parent</span>
+                    </div>
+                    <span class="review-date">3 weeks ago</span>
+                </div>
+                <div class="card-stars">⭐⭐⭐⭐⭐</div>
+                <h4 class="review-card-title">Beautiful knit quality</h4>
+                <p class="review-body-text">
+                    The Cozy Knit Sweater feels premium and thick. It has been through three washes already and hasn't
+                    shrunk or pilled at all. Will definitely be ordering more pastel apparel options soon!
+                </p>
+                <span class="purchased-item-label">Purchased: <strong class="text-pink">Cozy Knit
+                        Sweater</strong></span>
+            </div>
+
+            <div class="review-item-card border-green-top">
+                <div class="review-card-header">
+                    <div class="user-avatar bg-avatar-green">JM</div>
+                    <div class="user-meta-info">
+                        <h4>John M.</h4>
+                        <span class="verified-buyer-tag">✓ Verified Parent</span>
+                    </div>
+                    <span class="review-date">1 month ago</span>
+                </div>
+                <div class="card-stars">⭐⭐⭐⭐⭐</div>
+                <h4 class="review-card-title">The lights on the wheels are a hit</h4>
+                <p class="review-body-text">
+                    My son absolutely loves his Lean-to-Steer Scooter! The glowing LED wheels look incredible around
+                    dusk. The handlebar adjusting lock is solid and grows with him nicely.
+                </p>
+                <span class="purchased-item-label">Purchased: <strong class="text-pink">Lean-to-Steer
+                        Scooter</strong></span>
+            </div>
+
+        </div>
+    </main>
+
+    {% include 'footer.html' %}
+
+    <script src="{% static 'kids-interactive.js' %}?v=2.0"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const writeBtn = document.querySelector(".write-review-btn");
+            const cancelBtn = document.getElementById("cancel-review-btn");
+            const writeReviewContainer = document.getElementById("write-review-container");
+            const submitForm = document.getElementById("submit-review-form");
+            const reviewsGrid = document.querySelector(".reviews-masonry-grid");
+
+            // Load custom reviews from localStorage to persist them
+            const loadCustomReviews = () => {
+                const customReviews = JSON.parse(localStorage.getItem("mamakodal_custom_reviews")) || [];
+                customReviews.forEach(rev => {
+                    reviewsGrid.insertAdjacentHTML("afterbegin", rev.html);
+                });
+            };
+
+            // Prepend existing custom reviews
+            loadCustomReviews();
+
+            // Toggle show review form
+            if (writeBtn && writeReviewContainer) {
+                writeBtn.addEventListener("click", () => {
+                    writeReviewContainer.style.display = "block";
+                    writeReviewContainer.scrollIntoView({ behavior: "smooth", block: "start" });
+                });
+            }
+
+            // Toggle hide review form
+            if (cancelBtn && writeReviewContainer) {
+                cancelBtn.addEventListener("click", () => {
+                    writeReviewContainer.style.display = "none";
+                });
+            }
+
+            // Handle review submit
+            if (submitForm) {
+                submitForm.addEventListener("submit", (e) => {
+                    e.preventDefault();
+
+                    const name = document.getElementById("review-author-name").value;
+                    const rating = parseInt(document.getElementById("review-rating-stars").value);
+                    const title = document.getElementById("review-title").value;
+                    const item = document.getElementById("review-purchased-item").value;
+                    const text = document.getElementById("review-text-message").value;
+
+                    // Generate Initials
+                    const initials = name.trim().split(/\s+/).map(n => n[0]).join('').substring(0, 2).toUpperCase() || 'U';
+
+                    // Pick random colorful avatar styling
+                    const colors = ['bg-avatar-pink', 'bg-avatar-blue', 'bg-avatar-yellow', 'bg-avatar-purple', 'bg-avatar-green'];
+                    const borderColors = ['border-pink-top', 'border-blue-top', 'border-yellow-top', 'border-purple-top', 'border-green-top'];
+                    const avatarBgClass = colors[Math.floor(Math.random() * colors.length)];
+                    const cardBorderClass = borderColors[Math.floor(Math.random() * borderColors.length)];
+
+                    const starsHtml = '⭐'.repeat(rating);
+
+                    // Generate date string
+                    const dateStr = "Just now";
+
+                    const reviewHtml = `
+                        <div class="review-item-card ${cardBorderClass}" style="animation: cloudFloatIntro 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1) forwards;">
+                            <div class="review-card-header">
+                                <div class="user-avatar ${avatarBgClass}">${initials}</div>
+                                <div class="user-meta-info">
+                                    <h4>${name}</h4>
+                                    <span class="verified-buyer-tag">✓ Verified Parent</span>
+                                </div>
+                                <span class="review-date">${dateStr}</span>
+                            </div>
+                            <div class="card-stars">${starsHtml}</div>
+                            <h4 class="review-card-title">${title}</h4>
+                            <p class="review-body-text">${text}</p>
+                            <span class="purchased-item-label">Purchased: <strong class="text-pink">${item}</strong></span>
+                        </div>
+                    `;
+
+                    // Prepend new review card to grid
+                    reviewsGrid.insertAdjacentHTML("afterbegin", reviewHtml);
+
+                    // Save custom review to localStorage for persistence
+                    const customReviews = JSON.parse(localStorage.getItem("mamakodal_custom_reviews")) || [];
+                    customReviews.push({
+                        name, rating, title, item, text, html: reviewHtml
+                    });
+                    localStorage.setItem("mamakodal_custom_reviews", JSON.stringify(customReviews));
+
+                    // Trigger celebration effects using KidsInteractivityInstance
+                    if (window.KidsInteractivityInstance) {
+                        window.KidsInteractivityInstance.playSynthSound('success');
+                        window.KidsInteractivityInstance.addStars(20, e.clientX || window.innerWidth / 2, e.clientY || window.innerHeight / 2);
+                        
+                        // Fire a burst of sparkles
+                        const cx = window.innerWidth / 2;
+                        const cy = window.innerHeight / 2;
+                        window.KidsInteractivityInstance.spawnSparkles(cx, cy, 25, ['🌈', '✨', '🎈', '⭐']);
+                    }
+
+                    // Reset and hide form
+                    submitForm.reset();
+                    writeReviewContainer.style.display = "none";
+
+                    // Alert confirmation
+                    const alertBanner = document.getElementById('explorer-alert');
+                    if (alertBanner) {
+                        alertBanner.innerHTML = `✨ Review submitted successfully! +20 Explorer Stars! 🦖`;
+                        alertBanner.classList.add('show');
+                        setTimeout(() => {
+                            alertBanner.classList.remove('show');
+                        }, 2500);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

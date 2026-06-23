@@ -1,0 +1,230 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MK online store</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}?v=2.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body data-user-authenticated="{% if user.is_authenticated %}true{% else %}false{% endif %}" data-user-stars="{% if user.is_authenticated %}{{ user.profile.stars }}{% else %}0{% endif %}" data-user-level="{% if user.is_authenticated %}{{ user.profile.level }}{% else %}1{% endif %}">
+
+    <header class="navbar">
+        <div class="logo-container">
+            <div class="logo-icon">M</div>
+            <span class="logo-text">Mama<span class="text-pink">Kodal</span></span>
+        </div>
+
+        <nav class="nav-links">
+            <a href="{% url 'home' %}" class="nav-item active">Home</a>
+            <a href="{% url 'collections' %}" class="nav-item">Collections</a>
+            <a href="{% url 'new_arrivals' %}" class="nav-item">Newly Arrivals</a>
+            <a href="{% url 'reviews' %}" class="nav-item">Reviews</a>
+            <a href="{% url 'about' %}" class="nav-item">About Us</a>
+            <a href="{% url 'contact' %}" class="nav-item">Contact</a>
+
+        </nav>
+
+        <div class="action-container">
+            <a href="{% url 'cart' %}" class="cart-btn" aria-label="Cart">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>
+            </a>
+            {% if user.is_authenticated %}
+            <div class="dropdown-wrapper">
+                <a href="{% url 'profile' %}" class="profile-btn" style="text-decoration: none;">
+                    {{ user.profile.avatar }} Profile
+                </a>
+                <div class="dropdown-menu">
+                    <div class="dropdown-inner">
+                        <a href="{% url 'profile' %}">Dashboard</a>
+                        <a href="{% url 'logout' %}">Log Out</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <a href="{% url 'login' %}" class="profile-btn" style="text-decoration: none;">Login</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="bg-page-home page-transition-wrapper">
+        <section class="hero-wrapper">
+            <div class="hero-container">
+
+                <div class="hero-content">
+                    <div class="badge">
+                        <span>✨</span>
+                        <span>New season, new smiles</span>
+                    </div>
+
+                    <h1 class="main-title">
+                        Tiny treasures.<br>
+                        <span class="text-pink">Big smiles.</span>
+                    </h1>
+
+                    <p class="description">
+                        Dresses that twirl, shoes that bounce, toys that giggle. Everything your little one needs —
+                        handpicked by MamaKodal.
+                    </p>
+
+                    <div class="cta-buttons">
+                        <a href="{% url 'collections' %}" class="btn-primary">Shop Collections</a>
+                        <a href="{% url 'new_arrivals' %}" class="btn-primary">See New Arrivals</a>
+                    </div>
+                </div>
+
+                <div class="hero-graphic-panel">
+                    <div class="white-card">
+                        <div class="card-inner-layout">
+                            <div class="illustration-box">
+                                <img src="{% static 'images/kid.png' %}" alt="Happy kids illustration with balloons">
+                            </div>
+                            <div class="spacer-box"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="collections-section">
+            <div class="collections-container">
+
+                <div class="collections-header">
+                    <div class="header-left">
+                        <h2 class="section-title">Shop by Collection</h2>
+                        <p class="section-subtitle">Four worlds of wonder for your little explorer.</p>
+                    </div>
+                    <a href="{% url 'collections' %}" class="view-all-link">View all &rarr;</a>
+                </div>
+
+                <div class="collections-grid">
+
+                    <div class="collection-card card-pink">
+                        <div class="card-icon">👗</div>
+                        <h3 class="card-title">Dresses & Apparel</h3>
+                        <p class="card-desc">Soft, comfy, twirl-ready</p>
+                        <a href="{% url 'cloths' %}" class="explore-link link-pink">Explore &rarr;</a>
+                    </div>
+
+                    <div class="collection-card card-blue">
+                        <div class="card-icon">👟</div>
+                        <h3 class="card-title">Slippers & Shoes</h3>
+                        <p class="card-desc">Tiny feet, big steps</p>
+                        <a href="{% url 'footwear' %}" class="explore-link link-blue">Explore &rarr;</a>
+                    </div>
+
+                    <div class="collection-card card-green">
+                        <div class="card-icon">🧸</div>
+                        <h3 class="card-title">Toys & Games</h3>
+                        <p class="card-desc">Hours of giggles</p>
+                        <a href="{% url 'toys' %}" class="explore-link link-green">Explore &rarr;</a>
+                    </div>
+
+                    <div class="collection-card card-yellow">
+                        <div class="card-icon">🎀</div>
+                        <h3 class="card-title">Accessories & Essentials</h3>
+                        <p class="card-desc">The cherry on top</p>
+                        <a href="{% url 'accessories' %}" class="explore-link link-yellow">Explore &rarr;</a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="featured-section">
+            <div class="featured-container">
+
+                <div class="featured-header">
+                    <h2 class="section-title">Fresh & Featured</h2>
+                    <a href="#" class="view-all-link">All new arrivals &rarr;</a>
+                </div>
+
+                <div class="products-grid">
+
+                    <div class="product-card">
+                        <div class="image-wrapper">
+                            <span class="new-tag">✨ New</span>
+                            <img src="https://images.unsplash.com/photo-1722109400717-3d93597b280e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fFJhaW5ib3clMjBUdXR1JTIwRHJlc3MlMjBmb3IlMjBraWRzfGVufDB8fDB8fHww"
+                                alt="Rainbow Tutu Dress">
+                        </div>
+                        <div class="product-details">
+                            <h3 class="product-name">Rainbow Tutu Dress</h3>
+                            <p class="product-desc">Twirl-perfect tulle skirt with a soft cotton bodice.</p>
+                            <div class="product-footer">
+                                <span class="product-price">Rs.499</span>
+                                <button class="add-to-cart-btn">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="image-wrapper">
+                            <span class="new-tag">✨ New</span>
+                            <img src="https://images.unsplash.com/photo-1730144487110-31500c3cb72e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8UG9sa2ElMjBQYXJ0eSUyMEZyb2NrJTIwZm9yJTIwa2lkc3xlbnwwfHwwfHx8MA%3D%3D"
+                                alt="Party Frock">
+                        </div>
+                        <div class="product-details">
+                            <h3 class="product-name">Party Frock</h3>
+                            <p class="product-desc">Pink polka-dot dress for little celebrations.</p>
+                            <div class="product-footer">
+                                <span class="product-price">Rs.599</span>
+                                <button class="add-to-cart-btn">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="image-wrapper">
+                            <span class="new-tag">✨ New</span>
+                            <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8c25lYWtlcnxlbnwwfHwwfHx8MA%3D%3D"
+                                alt="Sneakers">
+                        </div>
+                        <div class="product-details">
+                            <h3 class="product-name">Sneakers</h3>
+                            <p class="product-desc">Squishy soft soles, easy velcro straps.</p>
+                            <div class="product-footer">
+                                <span class="product-price">Rs.999</span>
+                                <button class="add-to-cart-btn">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="image-wrapper">
+                            <span class="new-tag">✨ New</span>
+                            <img src="https://images.unsplash.com/photo-1654959246633-3627abc150fa?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTc0fHxDdWRkbGUlMjBCZWFyJTIwUGx1c2glMjBmb3IlMjBraWRzfGVufDB8fDB8fHww"
+                                alt="Cuddle Bear Plush">
+                        </div>
+                        <div class="product-details">
+                            <h3 class="product-name">Cuddle Bear Plush</h3>
+                            <p class="product-desc">Hand-stitched teddy, the softest hug around.</p>
+                            <div class="product-footer">
+                                <span class="product-price">Rs.599</span>
+                                <button class="add-to-cart-btn">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+        </section>
+    </main>
+
+    {% include 'footer.html' %}
+
+    <script src="{% static 'kids-interactive.js' %}?v=2.0"></script>
+</body>
+
+</html>

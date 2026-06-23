@@ -1,0 +1,687 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaKodal - Magical Clothes & Apparel Toybox</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}?v=2.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body data-user-authenticated="{% if user.is_authenticated %}true{% else %}false{% endif %}"
+    data-user-stars="{% if user.is_authenticated %}{{ user.profile.stars }}{% else %}0{% endif %}"
+    data-user-level="{% if user.is_authenticated %}{{ user.profile.level }}{% else %}1{% endif %}">
+
+    <header class="navbar">
+        <div class="logo-container">
+            <div class="logo-icon">M</div>
+            <span class="logo-text">Mama<span class="text-pink">Kodal</span></span>
+        </div>
+
+        <nav class="nav-links">
+            <a href="/" class="nav-item">Home</a>
+            <a href="{% url 'collections' %}" class="nav-item">Collections</a>
+            <a href="{% url 'new_arrivals' %}" class="nav-item">New Arrivals</a>
+            <a href="#shirts" class="nav-item">Shirts</a>
+            <a href="#pants" class="nav-item">Pants</a>
+            <a href="#sweaters" class="nav-item">Sweaters</a>
+            <a href="#dresses" class="nav-item">Dresses</a>
+            <a href="#tshirts" class="nav-item">T-Shirts</a>
+            <a href="#shorts" class="nav-item">Shorts</a>
+        </nav>
+
+        <div class="action-container">
+            <a href="{% url 'cart' %}" class="cart-btn" aria-label="Cart">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>
+            </a>
+            {% if user.is_authenticated %}
+            <div class="dropdown-wrapper">
+                <a href="{% url 'profile' %}" class="profile-btn" style="text-decoration: none;">
+                    {{ user.profile.avatar }} Profile
+                </a>
+                <div class="dropdown-menu">
+                    <div class="dropdown-inner">
+                        <a href="{% url 'profile' %}">Dashboard</a>
+                        <a href="{% url 'logout' %}">Log Out</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <a href="{% url 'login' %}" class="profile-btn" style="text-decoration: none;">Login</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="about-page-container page-transition-wrapper">
+
+        <div style="text-align: left; margin-bottom: 50px;">
+            <div class="badge-tag">🎒 Playground Wardrobe</div>
+            <h1 class="main-page-heading" style="margin-bottom: 12px;">The Clothes Kingdom!</h1>
+            <p style="font-size: 20px; color: var(--text-secondary); font-weight: 700; max-width: 700px;">
+                Super comfy, bright, skin-safe outfits engineered strictly for endless playing, jumping, and climbing
+                adventures!
+            </p>
+        </div>
+
+
+
+
+        <section id="shirts" style="margin-bottom: 90px;">
+            <div
+                style="margin-bottom: 32px; display: flex; align-items: center; justify-content: flex-start; gap: 16px; text-align: left;">
+
+                <span class="value-icon card-pink"
+                    style="width: 50px; height: 50px; border: 3px solid var(--text-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">👕</span>
+
+                <h2 class="section-title"
+                    style="margin: 0; text-align: left; font-family: var(--font-heading); font-size: 48px; text-shadow: 3px 3px 0px var(--accent-yellow-light);">
+                    Cool & Playful Shirts
+                </h2>
+
+            </div>
+
+            <div class="product-four-column-grid">
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1518463231256-578cfa07d614?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzMwfHxzaGlydHMlMjBmb3IlMjBraWRzfGVufDB8fDB8fHww"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Summer Shirt">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category text-pink">Shirts</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Summer Shirt</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.499</span>
+                            <button class="add-to-cart-btn" style="padding: 10px 20px; font-size: 14px;">Add 🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1548820450-50343d49030e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGNvdHRvbiUyMHNoaXJ0c2ZvciUyMGtpZHN8ZW58MHx8MHx8fDA%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Cotton Shirt">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category text-pink">Shirts</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Cotton Shirt</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.699</span>
+                            <button class="add-to-cart-btn" style="padding: 10px 20px; font-size: 14px;">Add 🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1689400497214-bdf51d969dac?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fFN1bm55JTIwTGluZW4lMjBTaGlydCUyMGZvciUyMGtpZHN8ZW58MHx8MHx8fDA%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Sunny Linen Shirt">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category text-pink">Shirts</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Sunny Linen Shirt</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.899</span>
+                            <button class="add-to-cart-btn" style="padding: 10px 20px; font-size: 14px;">Add 🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1644389975737-8c4b9b07d445?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjM0fHxQYXJ0eSUyMFNoaXJ0JTIwZm9yJTIwa2lkc3xlbnwwfHwwfHx8MA%3D%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Magic Party Shirt">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category text-pink">Shirts</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Magic Party Shirt</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.999</span>
+                            <button class="add-to-cart-btn" style="padding: 10px 20px; font-size: 14px;">Add 🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1736634157451-4babd85aae3d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjMxfHxQaWNuaWMlMjBDb3JkdXJveSUyMFNoaXJ0JTIwZm9yJTIwa2lkc3xlbnwwfHwwfHx8MA%3D%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Picnic Shirt">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category text-pink">Shirts</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Picnic Shirt</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.899</span>
+                            <button class="add-to-cart-btn" style="padding: 10px 20px; font-size: 14px;">Add 🎒</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="pants" style="margin-bottom: 90px;">
+            <div style="margin-bottom: 32px; display: flex; align-items: center; gap: 16px;">
+                <span class="value-icon card-blue"
+                    style="width: 50px; height: 50px; border: 3px solid var(--text-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">👖</span>
+                <h2 class="section-title" style="margin: 0;">Stretch Pants</h2>
+            </div>
+
+            <div class="product-four-column-grid">
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1661784396787-2a43e31a5689?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTR8fGNhcmdvJTIwcGFudCUyMGZvciUyMGtpZHN8ZW58MHx8MHx8fDA%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Mud-Proof Active Cargoes">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--secondary);">Pants</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Cargo Pants</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.999</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--secondary); box-shadow: 0 6px 0px var(--secondary-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1632232962706-b0b17c9c2b5e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fEVsYXN0aWMlMjBKb2dnZXJzJTIwZm9yJTIwa2lkc3xlbnwwfHwwfHx8MA%3D%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Comfy Ribbed Joggers">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--secondary);">Pants</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Elastic Joggers</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs. 499</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--secondary); box-shadow: 0 6px 0px var(--secondary-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://plus.unsplash.com/premium_photo-1723809808474-d4f3488faf1d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGplYW5zJTIwZm9yJTIwa2lkc3xlbnwwfHwwfHx8MA%3D%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Flexi Durable Playground Jeans">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--secondary);">Pants</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Playground Jeans</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.699</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--secondary); box-shadow: 0 6px 0px var(--secondary-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1649318095076-46f25857238e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjd8fGxlZ2dpbnMlMjBmb3IlMjBraWRzfGVufDB8fDB8fHww"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Cozy Fleece Leggings">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--secondary);">Pants</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Leggings</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.499</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--secondary); box-shadow: 0 6px 0px var(--secondary-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1661277702023-8153e1c7d80a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Q2hpbm8lMjBTdXNwZW5kZXIlMjBQYW50cyUyMGZvciUyMGtpZHN8ZW58MHx8MHx8fDA%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Sweet Chino Suspenders Pant">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--secondary);">Pants</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Chino Suspender Pants</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.899</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--secondary); box-shadow: 0 6px 0px var(--secondary-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="sweaters" style="margin-bottom: 90px;">
+            <div style="margin-bottom: 32px; display: flex; align-items: center; gap: 16px;">
+                <span class="value-icon card-green"
+                    style="width: 50px; height: 50px; border: 3px solid var(--text-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">☁️</span>
+                <h2 class="section-title" style="margin: 0;">Cloud-Knit Sweaters</h2>
+            </div>
+
+            <div class="product-four-column-grid">
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1647761269925-9446047bda1d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTJ8fENvdHRvbiUyMENhbmR5JTIwQ2FyZGlnYW4lMjBmb3IlMjBraWRzfGVufDB8fDB8fHww"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Pastel Cotton Candy Cardigan">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--accent-purple-dark);">Sweaters</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Cotton Candy Cardigan</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs. 899</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--accent-purple); box-shadow: 0 6px 0px var(--accent-purple-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://plus.unsplash.com/premium_photo-1699303531862-023670efea2c?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Q2h1bmt5JTIwQ2FibGUlMjBQdWxsb3ZlciUyMGZvciUyMGtpZHN8ZW58MHx8MHx8fDA%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Chunky Cable Knit Pullover">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--accent-purple-dark);">Sweaters</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Chunky Cable Pullover</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.1200</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--accent-purple); box-shadow: 0 6px 0px var(--accent-purple-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://plus.unsplash.com/premium_photo-1700238195370-9407fc77a4c5?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fEFuaW1hbCUyMFBhdGNoJTIwU3dlYXRlciUyMGZvciUyMGtpZHN8ZW58MHx8MHx8fDA%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Magical Animal Patch Sweatshirt">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--accent-purple-dark);">Sweaters</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Animal Patch Sweater</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.999</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--accent-purple); box-shadow: 0 6px 0px var(--accent-purple-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://plus.unsplash.com/premium_photo-1759736277883-68183d049214?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8VGVkZHklMjBCZWFyJTIwRWFyJTIwSG9vZGllJTIwZm9yJTIwa2lkc3xlbnwwfHwwfHx8MA%3D%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Little Teddy Ear Hoodie">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--accent-purple-dark);">Sweaters</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Teddy Bear Ear Hoodie</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.1100 </span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--accent-purple); box-shadow: 0 6px 0px var(--accent-purple-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://plus.unsplash.com/premium_photo-1724296696869-59cc80d104c4?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8UmFpbmJvdyUyMFN0cmlwZSUyMEtuaXQlMjBmb3IlMjBraWRzfGVufDB8fDB8fHww"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Cozy Rainbow Stripe Knitwear">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--accent-purple-dark);">Sweaters</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Rainbow Stripe Knit</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.1200</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--accent-purple); box-shadow: 0 6px 0px var(--accent-purple-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="dresses" style="margin-bottom: 90px;">
+            <div style="margin-bottom: 32px; display: flex; align-items: center; gap: 16px;">
+                <span class="value-icon card-yellow"
+                    style="width: 50px; height: 50px; border: 3px solid var(--text-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">👗</span>
+                <h2 class="section-title" style="margin: 0;">Whimsical & Fairy Dresses</h2>
+            </div>
+
+            <div class="product-four-column-grid">
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1634467122649-2720e5e88b55?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8RmFpcnklMjBNYWdpYyUyMFR3aXJsJTIwRHJlc3N8ZW58MHx8MHx8fDA%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Fairy Magic Twirl Dress">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--accent-yellow-text);">Dresses</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Fairy Magic Twirl Dress</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.1800</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--accent-yellow); color: var(--text-primary) !important; box-shadow: 0 6px 0px var(--accent-yellow-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/flagged/photo-1580081888851-f8ae1ce9d1e6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fFN1bmZsb3dlciUyMFBpbmFmb3JlJTIwZm9yJTIwa2lkc3xlbnwwfHwwfHx8MA%3D%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;"
+                            alt="Soft Sunflower Corduroy Pinafore">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--accent-yellow-text);">Dresses</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Sunflower Pinafore</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.1500</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--accent-yellow); color: var(--text-primary) !important; box-shadow: 0 6px 0px var(--accent-yellow-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1616725286813-eb1507724f14?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fExpbmVuJTIwU3VuJTIwRHJlc3MlMjBmb3IlMjBraWRzfGVufDB8fDB8fHww"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Ocean Breeze Linen Sun Dress">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--accent-yellow-text);">Dresses</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Linen Sun Dress</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.1500</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--accent-yellow); color: var(--text-primary) !important; box-shadow: 0 6px 0px var(--accent-yellow-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1617979736388-14fc48f6b237?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDR8fFZpbnRhZ2UlMjBMYWNlJTIwR293biUyMGZvciUyMGtpZHN8ZW58MHx8MHx8fDA%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Vintage Lace Party Gown">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--accent-yellow-text);">Dresses</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Vintage Lace Gown</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.2200</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--accent-yellow); color: var(--text-primary) !important; box-shadow: 0 6px 0px var(--accent-yellow-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1642597549127-395fd6c7ee24?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8R2luZ2hhbSUyMFBpY25pYyUyMERyZXNzJTIwZm9yJTIwa2lkcyd8ZW58MHx8MHx8fDA%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Gingham Play Picnic Dress">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--accent-yellow-text);">Dresses</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Gingham Picnic Dress</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.1500</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--accent-yellow); color: var(--text-primary) !important; box-shadow: 0 6px 0px var(--accent-yellow-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="tshirts" style="margin-bottom: 90px;">
+            <div style="margin-bottom: 32px; display: flex; align-items: center; gap: 16px;">
+                <span class="value-icon card-green"
+                    style="width: 50px; height: 50px; border: 3px solid var(--text-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">🎨</span>
+                <h2 class="section-title" style="margin: 0;">Bio-Wash Fun T-Shirts</h2>
+            </div>
+
+            <div class="product-four-column-grid">
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1719503970938-677a31d929d5?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fFJvY2tldCUyMHBvY2tldCUyMHRlZXxlbnwwfHwwfHx8MA%3D%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Happy Rocket Pocket Tee">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--accent-green-dark);">T-Shirts</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Rocket Pocket Tee</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.1800</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--accent-green); box-shadow: 0 6px 0px var(--accent-green-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1629881863001-5d98c54ea6cf?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Q29taWMlMjBDaGFyYWN0ZXIlMjBUZWUlMjBmb3IlMjBraWRzfGVufDB8fDB8fHww"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Cute Comic Character Tee">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--accent-green-dark);">T-Shirts</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Comic Character Tee</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.1800</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--accent-green); box-shadow: 0 6px 0px var(--accent-green-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1756982784602-d2c900b270dd?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8U3Vuc2hpbmUlMjBTdHJpcGUlMjBUZWUlMjBmb3IlMjBraWRzfGVufDB8fDB8fHww"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Vibrant Sunshine Stripe Tee">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--accent-green-dark);">T-Shirts</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Sunshine Stripe Tee</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.1500</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--accent-green); box-shadow: 0 6px 0px var(--accent-green-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://plus.unsplash.com/premium_photo-1755534537396-fa433624ca2f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8T3JnYW5pYyUyME9jZWFuJTIwVGVlJTIwZm9yJTIwa2lkc3xlbnwwfHwwfHx8MA%3D%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Save The Oceans organic T-Shirt">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--accent-green-dark);">T-Shirts</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Organic Ocean Tee</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.1000</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--accent-green); box-shadow: 0 6px 0px var(--accent-green-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://plus.unsplash.com/premium_photo-1722048819566-c0d9de602f9e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8T3JnYW5pYyUyME9jZWFuJTIwVGVlJTIwZm9yJTIwa2lkc3xlbnwwfHwwfHx8MA%3D%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Little Explorer Raglan Tee">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category" style="color: var(--accent-green-dark);">T-Shirts</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Explorer Raglan Tee</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.900</span>
+                            <button class="add-to-cart-btn"
+                                style="padding: 10px 20px; font-size: 14px; background-color: var(--accent-green); box-shadow: 0 6px 0px var(--accent-green-dark);">Add
+                                🎒</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="shorts" style="margin-bottom: 30px;">
+            <div style="margin-bottom: 32px; display: flex; align-items: center; gap: 16px;">
+                <span class="value-icon card-pink"
+                    style="width: 50px; height: 50px; border: 3px solid var(--text-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px;">🏃</span>
+                <h2 class="section-title" style="margin: 0;">Shorts</h2>
+            </div>
+
+            <div class="product-four-column-grid">
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://plus.unsplash.com/premium_photo-1689575249488-aca091ed2eec?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8RGVuaW0lMjBTaG9ydHMlMjBmb3IlMjBraWRzfGVufDB8fDB8fHww"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Heavy Denim Playground Shorts">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category text-pink">Shorts</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Denim Shorts</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.499</span>
+                            <button class="add-to-cart-btn" style="padding: 10px 20px; font-size: 14px;">Add 🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1654659332266-282e3163e05e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fE1lc2glMjBTaG9ydHMlMjBmb3IlMjBraWRzfGVufDB8fDB8fHww"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Breathable Mesh Sports Shorts">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category text-pink">Shorts</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Mesh Shorts</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.399</span>
+                            <button class="add-to-cart-btn" style="padding: 10px 20px; font-size: 14px;">Add 🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1632337950445-ba446cb0e26f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8RnJlbmNoJTIwU2hvcnRzJTIwZm9yJTIwa2lkc3xlbnwwfHwwfHx8MA%3D%3D"
+                            style="width: 100%; height: 100%; object-fit: cover;"
+                            alt="Organic French Terry Drawstring Shorts">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category text-pink">Shorts</span>
+                        <h3 class="product-name" style="margin: 6px 0;">French Shorts</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.599</span>
+                            <button class="add-to-cart-btn" style="padding: 10px 20px; font-size: 14px;">Add 🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://images.unsplash.com/photo-1604482858862-1db908a653e4?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8TGluZW4lMjBTaG9ydHMlMjBmb3IlMjBraWRzfGVufDB8fDB8fHww"
+                            style="width: 100%; height: 100%; object-fit: cover;" alt="Sweet Linen Twill Chino Shorts">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category text-pink">Shorts</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Linen Shorts</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.799</span>
+                            <button class="add-to-cart-btn" style="padding: 10px 20px; font-size: 14px;">Add 🎒</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="image-wrapper"
+                        style="height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 28px 28px 0 0;">
+                        <img src="https://plus.unsplash.com/premium_photo-1691367782367-2bd37f646abc?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Q2FtcGVyJTIwU2hvcnQlMjBmb3IlMjBraWRzfGVufDB8fDB8fHww"
+                            style="width: 100%; height: 100%; object-fit: cover;"
+                            alt="Little Camper Khaki Cargo Shorts">
+                    </div>
+                    <div style="padding: 24px;">
+                        <span class="item-category text-pink">Shorts</span>
+                        <h3 class="product-name" style="margin: 6px 0;">Camper Shorts</h3>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
+                            <span class="product-price">Rs.699</span>
+                            <button class="add-to-cart-btn" style="padding: 10px 20px; font-size: 14px;">Add 🎒</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    {% include 'footer.html' %}
+
+    <script src="{% static 'kids-interactive.js' %}?v=2.0"></script>
+</body>
+
+</html>

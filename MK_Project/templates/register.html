@@ -1,0 +1,279 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaKodal - Register Explorer Account</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}?v=2.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        .brand-contact-form input[type="text"],
+        .brand-contact-form input[type="email"],
+        .brand-contact-form input[type="password"],
+        .brand-contact-form select,
+        .brand-contact-form textarea {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            padding: 14px 18px;
+            border-radius: var(--radius-sm);
+            outline: none;
+            transition: all 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .brand-contact-form input:focus,
+        .brand-contact-form select:focus,
+        .brand-contact-form textarea:focus {
+            background-color: var(--bg-card);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .avatar-option {
+            background: var(--bg-main);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 26px;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .avatar-option:hover {
+            transform: scale(1.1) rotate(2deg);
+            border-color: var(--primary-hover);
+        }
+
+        .avatar-option.selected {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            transform: scale(1.1) rotate(-3deg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .input-field-group {
+            margin-bottom: 4px;
+        }
+
+        .help-text {
+            color: var(--text-muted);
+            font-size: 11px;
+            display: block;
+            margin-top: 4px;
+            line-height: 1.3;
+        }
+
+        .error-text {
+            color: var(--primary-dark);
+            font-size: 12px;
+            font-weight: 700;
+            display: block;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+
+<body data-user-authenticated="false" data-user-stars="0" data-user-level="1">
+
+    <header class="navbar">
+        <a href="/" class="logo-container" style="text-decoration: none;">
+            <div class="logo-icon">M</div>
+            <span class="logo-text">Mama<span class="text-pink">Kodal</span></span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="/" class="nav-item">Home</a>
+            <a href="{% url 'collections' %}" class="nav-item">Collections</a>
+            <a href="{% url 'new_arrivals' %}" class="nav-item">New Arrivals</a>
+            <a href="{% url 'reviews' %}" class="nav-item">Reviews</a>
+            <a href="{% url 'about' %}" class="nav-item">About Us</a>
+            <a href="{% url 'contact' %}" class="nav-item">Contact</a>
+        </nav>
+
+        <div class="action-container">
+            <a href="{% url 'cart' %}" class="cart-btn" aria-label="Cart">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>
+            </a>
+            <a href="{% url 'login' %}" class="profile-btn" style="text-decoration: none;">Login</a>
+        </div>
+    </header>
+
+    <main class="contact-page-container bg-page-contact-cart page-transition-wrapper" style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px;">
+        <div class="contact-form-panel" style="max-width: 650px; width: 100%; margin: 0 auto; box-sizing: border-box;">
+            <div style="text-align: center; margin-bottom: 24px;">
+                <span style="font-size: 48px;">🦖</span>
+                <h1 class="main-page-heading" style="font-size: 32px !important; margin-top: 10px; margin-bottom: 8px;">Create Explorer Account</h1>
+                <p style="color: var(--text-secondary); font-size: 15px; font-weight: 500;">Join MamaKodal to collect points, level up, and unlock achievements!</p>
+            </div>
+
+            {% if form.non_field_errors %}
+                <div style="background-color: var(--primary-light); color: var(--primary-dark); padding: 12px 16px; border-radius: var(--radius-sm); margin-bottom: 20px; font-size: 14px; font-weight: 600; border-left: 4px solid var(--primary);">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}<br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="POST" class="brand-contact-form" id="register-form">
+                {% csrf_token %}
+
+                <div class="form-input-row-split">
+                    <div class="input-field-group">
+                        <label for="id_first_name">First Name *</label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                            <span class="error-text">{{ form.first_name.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="input-field-group">
+                        <label for="id_last_name">Last Name *</label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                            <span class="error-text">{{ form.last_name.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-input-row-split">
+                    <div class="input-field-group">
+                        <label for="id_username">Username *</label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                            <span class="error-text">{{ form.username.errors.0 }}</span>
+                        {% else %}
+                            <small class="help-text">Letters, digits and @/./+/-/_ only.</small>
+                        {% endif %}
+                    </div>
+                    <div class="input-field-group">
+                        <label for="id_email">Email Address *</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <span class="error-text">{{ form.email.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-input-row-split">
+                    <div class="input-field-group">
+                        <label for="id_phone">Phone Number</label>
+                        {{ form.phone }}
+                        {% if form.phone.errors %}
+                            <span class="error-text">{{ form.phone.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="input-field-group">
+                        <label for="id_avatar">Choose Your Avatar *</label>
+                        <!-- Hide standard select field -->
+                        <div style="display: none;">
+                            {{ form.avatar }}
+                        </div>
+                        <!-- Display interactive emoji picker grid -->
+                        <div class="avatar-grid" id="avatar-picker-grid">
+                            <div class="avatar-option selected" data-value="🦖">🦖</div>
+                            <div class="avatar-option" data-value="🧸">🧸</div>
+                            <div class="avatar-option" data-value="🦄">🦄</div>
+                            <div class="avatar-option" data-value="🎈">🎈</div>
+                            <div class="avatar-option" data-value="🫧">🫧</div>
+                            <div class="avatar-option" data-value="🌟">🌟</div>
+                        </div>
+                        {% if form.avatar.errors %}
+                            <span class="error-text">{{ form.avatar.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="input-field-group">
+                    <label for="id_address">Shipping Address</label>
+                    {{ form.address }}
+                    {% if form.address.errors %}
+                        <span class="error-text">{{ form.address.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-input-row-split">
+                    <div class="input-field-group">
+                        <label for="id_password1">Password *</label>
+                        {{ form.password1 }}
+                        {% if form.password1.errors %}
+                            <span class="error-text">{{ form.password1.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="input-field-group">
+                        <label for="id_password2">Password Confirmation *</label>
+                        {{ form.password2 }}
+                        {% if form.password2.errors %}
+                            <span class="error-text">{{ form.password2.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <button type="submit" class="form-submit-btn" style="width: 100%; text-align: center; justify-content: center; display: block; box-sizing: border-box; margin-top: 10px;">
+                    Register & Start Exploring &rarr;
+                </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 24px; font-size: 14px; font-weight: 600; color: var(--text-secondary);">
+                Already have an explorer account? 
+                <a href="{% url 'login' %}" style="color: var(--primary-dark); text-decoration: none; font-weight: 700; margin-left: 4px;">Log In Here</a>
+            </div>
+        </div>
+    </main>
+
+    {% include 'footer.html' %}
+
+    <script src="{% static 'kids-interactive.js' %}?v=2.0"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const avatarSelect = document.getElementById('id_avatar');
+            const avatarOptions = document.querySelectorAll('.avatar-option');
+
+            // Set up picker click events
+            avatarOptions.forEach(opt => {
+                opt.addEventListener('click', () => {
+                    // Remove selected class from others
+                    avatarOptions.forEach(o => o.classList.remove('selected'));
+                    // Add selected class to this
+                    opt.classList.add('selected');
+                    // Update select field value
+                    const val = opt.getAttribute('data-value');
+                    if (avatarSelect) {
+                        avatarSelect.value = val;
+                    }
+                    
+                    // Sparkles visual response on select
+                    if (window.KidsInteractivityInstance) {
+                        const rect = opt.getBoundingClientRect();
+                        window.KidsInteractivityInstance.spawnSparkles(rect.left + rect.width/2, rect.top + rect.height/2, 6, [val, '✨']);
+                        window.KidsInteractivityInstance.playSynthSound('chime');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

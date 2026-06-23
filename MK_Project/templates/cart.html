@@ -1,0 +1,413 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaKodal - Your Shopping Cart</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}?v=2.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body data-user-authenticated="{% if user.is_authenticated %}true{% else %}false{% endif %}" data-user-stars="{% if user.is_authenticated %}{{ user.profile.stars }}{% else %}0{% endif %}" data-user-level="{% if user.is_authenticated %}{{ user.profile.level }}{% else %}1{% endif %}">
+
+    <header class="navbar">
+        <div class="logo-container">
+            <div class="logo-icon">M</div>
+            <span class="logo-text">Mama<span class="text-pink">Kodal</span></span>
+        </div>
+
+        <nav class="nav-links">
+            <a href="/" class="nav-item">Home</a>
+            <a href="{% url 'collections' %}" class="nav-item">Collections</a>
+            <a href="{% url 'new_arrivals' %}" class="nav-item">New Arrivals</a>
+            <a href="{% url 'reviews' %}" class="nav-item">Reviews</a>
+            <a href="{% url 'about' %}" class="nav-item">About Us</a>
+            <a href="{% url 'contact' %}" class="nav-item">Contact</a>
+
+        </nav>
+
+        <div class="action-container">
+            <button class="cart-btn" aria-label="Cart">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>
+            </button>
+            {% if user.is_authenticated %}
+            <div class="dropdown-wrapper">
+                <a href="{% url 'profile' %}" class="profile-btn" style="text-decoration: none;">
+                    {{ user.profile.avatar }} Profile
+                </a>
+                <div class="dropdown-menu">
+                    <div class="dropdown-inner">
+                        <a href="{% url 'profile' %}">Dashboard</a>
+                        <a href="{% url 'logout' %}">Log Out</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <a href="{% url 'login' %}" class="profile-btn" style="text-decoration: none;">Login</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="cart-page-container bg-page-contact-cart page-transition-wrapper">
+
+        <div class="page-title-box">
+            <h1 class="main-page-heading">Your Shopping Cart</h1>
+            <p class="page-subheading">Review your chosen treasures before we bundle them up with love.</p>
+        </div>
+
+        <div class="cart-layout-split">
+
+            <div class="cart-items-panel">
+                <div id="dynamic-cart-items"></div>
+
+                <a href="{% url 'collections' %}" class="continue-shopping-link">&larr; Continue Shopping</a>
+            </div>
+
+            <div class="cart-summary-panel">
+                <h2>Order Summary</h2>
+
+                <div class="summary-row-details">
+                    <div class="summary-line">
+                        <span>Subtotal (3 items)</span>
+                        <span class="summary-val">$122.00</span>
+                    </div>
+                    <div class="summary-line">
+                        <span>Estimated Shipping</span>
+                        <span class="summary-val color-green">FREE</span>
+                    </div>
+                    <div class="summary-line">
+                        <span>Tax / GST</span>
+                        <span class="summary-val">$0.00</span>
+                    </div>
+
+                    <hr class="summary-divider">
+
+                    <div class="summary-line total-price-line">
+                        <span>Total amount</span>
+                        <span class="final-total-price">$122.00</span>
+                    </div>
+                </div>
+
+                <div class="safety-badge-note">
+                    <span class="badge-icon">🛡️</span>
+                    <p>Secured Checkout: 256-bit encryption protecting your financial parameters.</p>
+                </div>
+
+                <form id="checkout-form" action="{% url 'checkout' %}" method="POST" style="width: 100%;">
+                    {% csrf_token %}
+                    <input type="hidden" name="cart_data" id="cart-data-input" value="[]">
+                    <input type="hidden" name="total_price" id="total-price-input" value="0.00">
+                    <button type="button" id="pay-btn" class="checkout-submit-btn" style="width: 100%; border: none; cursor: pointer; text-align: center; display: block; box-sizing: border-box;">Proceed to Pay &rarr;</button>
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+    {% include 'footer.html' %}
+
+    <script src="{% static 'kids-interactive.js' %}?v=2.0"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const dynamicCartItems = document.getElementById("dynamic-cart-items");
+            const cartLayoutSplit = document.querySelector(".cart-layout-split");
+            const cartContainer = document.querySelector(".cart-page-container");
+
+            // Load cart from localStorage
+            let cart = JSON.parse(localStorage.getItem('mamakodal_cart')) || [];
+
+            const renderCartItems = () => {
+                if (!dynamicCartItems) return;
+                dynamicCartItems.innerHTML = "";
+
+                if (cart.length === 0) {
+                    updateCartTotals();
+                    return;
+                }
+
+                cart.forEach((item, index) => {
+                    // Normalize category class/color
+                    let catColorClass = "color-pink";
+                    const lowerCat = (item.category || "").toLowerCase();
+                    if (lowerCat.includes("toy") || lowerCat.includes("game")) {
+                        catColorClass = "color-yellow";
+                    } else if (lowerCat.includes("footwear") || lowerCat.includes("shoes")) {
+                        catColorClass = "color-blue";
+                    } else if (lowerCat.includes("accessories") || lowerCat.includes("bags") || lowerCat.includes("stationary")) {
+                        catColorClass = "color-purple";
+                    }
+
+                    const itemHtml = `
+                        <div class="cart-item-card" data-index="${index}">
+                            <div class="cart-item-img-box">
+                                <img src="${item.imgUrl || 'https://images.unsplash.com/photo-1515488042361-404e9250afef?q=80&w=200&auto=format&fit=crop'}"
+                                    alt="${item.title}">
+                            </div>
+                            <div class="cart-item-details">
+                                <span class="item-category ${catColorClass}">${item.category || 'Product'}</span>
+                                <h3 class="item-title">${item.title}</h3>
+                                <p class="item-spec">Quality Selection | MamaKodal Approved</p>
+                                <span class="item-unit-price">${item.price}</span>
+                            </div>
+                            <div class="cart-item-actions">
+                                <div class="quantity-selector">
+                                    <button class="qty-btn decrease-qty" aria-label="Decrease quantity">−</button>
+                                    <span class="qty-value">${item.qty}</span>
+                                    <button class="qty-btn increase-qty" aria-label="Increase quantity">+</button>
+                                </div>
+                                <button class="remove-item-btn" aria-label="Remove item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m14.74 9-.346 9m-4.788 0L9 9m6 12.452a1.18 1.18 0 0 1-1.182-1.183V7.015m-11.238 0h16.476c.707 0 1.282.575 1.282 1.282v.428c0 .707-.575 1.282-1.282 1.282H2.518c-.707 0-1.282-.575-1.282-1.282v-.428c0-.707.575-1.282 1.282-1.282Zm4.512 0V4.309c0-.734.595-1.33 1.33-1.33h3.312c.734 0 1.33.596 1.33 1.33V7.015" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    dynamicCartItems.insertAdjacentHTML("beforeend", itemHtml);
+                });
+
+                attachCartListeners();
+                updateCartTotals();
+            };
+
+            const updateCartTotals = () => {
+                let totalItemsCount = 0;
+                let subtotal = 0;
+
+                cart.forEach(item => {
+                    const priceNum = parseFloat(item.price.replace(/[^\d.]/g, "")) || 0;
+                    totalItemsCount += item.qty;
+                    subtotal += item.qty * priceNum;
+                });
+
+                // Update summary elements
+                const summaryLines = document.querySelectorAll(".summary-line");
+                summaryLines.forEach(line => {
+                    const spanText = line.querySelector("span:first-child");
+                    if (spanText && spanText.textContent.includes("Subtotal")) {
+                        spanText.textContent = `Subtotal (${totalItemsCount} item${totalItemsCount !== 1 ? 's' : ''})`;
+                        const spanVal = line.querySelector(".summary-val");
+                        if (spanVal) {
+                            spanVal.textContent = `$${subtotal.toFixed(2)}`;
+                        }
+                    }
+                    if (line.classList.contains("total-price-line")) {
+                        const finalTotal = line.querySelector(".final-total-price");
+                        if (finalTotal) {
+                            finalTotal.textContent = `$${subtotal.toFixed(2)}`;
+                        }
+                    }
+                });
+
+                // Update header cart icons if needed (optional but good UX)
+                if (window.KidsInteractivityInstance) {
+                    window.KidsInteractivityInstance.updateCartBadge();
+                } else {
+                    updateHeaderCartBadge(totalItemsCount);
+                }
+
+                // If cart is empty, show empty message
+                if (totalItemsCount === 0) {
+                    showEmptyCartMessage();
+                } else {
+                    if (cartLayoutSplit) {
+                        cartLayoutSplit.style.display = "grid";
+                    }
+                    const existingEmptyMsg = document.querySelector(".empty-cart-message");
+                    if (existingEmptyMsg) existingEmptyMsg.remove();
+                }
+            };
+
+            const updateHeaderCartBadge = (count) => {
+                const cartBtn = document.querySelector('.cart-btn');
+                if (cartBtn) {
+                    let badge = cartBtn.querySelector('.cart-badge-count');
+                    if (!badge && count > 0) {
+                        cartBtn.style.position = 'relative';
+                        badge = document.createElement('span');
+                        badge.className = 'cart-badge-count';
+                        badge.style.position = 'absolute';
+                        badge.style.top = '-5px';
+                        badge.style.right = '-5px';
+                        badge.style.background = 'var(--primary)';
+                        badge.style.color = 'white';
+                        badge.style.borderRadius = '50%';
+                        badge.style.padding = '2px 6px';
+                        badge.style.fontSize = '10px';
+                        badge.style.fontWeight = 'bold';
+                        cartBtn.appendChild(badge);
+                    }
+                    if (badge) {
+                        if (count > 0) {
+                            badge.textContent = count;
+                            badge.style.display = 'block';
+                        } else {
+                            badge.style.display = 'none';
+                        }
+                    }
+                }
+            };
+
+            const showEmptyCartMessage = () => {
+                if (cartLayoutSplit) {
+                    cartLayoutSplit.style.display = "none";
+                }
+
+                // Remove existing empty message if any
+                const existingEmptyMsg = document.querySelector(".empty-cart-message");
+                if (existingEmptyMsg) existingEmptyMsg.remove();
+
+                const emptyMessageHtml = `
+                    <div class="empty-cart-message white-card" style="max-width: 600px; margin: 60px auto; padding: 48px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 20px; border-radius: var(--radius-lg);">
+                        <span style="font-size: 64px; animation: brandItemFloat 4s ease-in-out infinite; display: inline-block; margin-bottom: 10px;">🎒</span>
+                        <h2 style="font-family: var(--font-heading); font-size: 28px; color: var(--text-primary); margin: 0;">Your Cart is Empty!</h2>
+                        <p style="color: var(--text-secondary); max-width: 420px; margin: 0 auto; line-height: 1.6;">It looks like you haven't added any treasures to your cart yet. Let's explore our latest collections!</p>
+                        <a href="/collections/" class="btn-primary" style="text-decoration: none; margin-top: 12px; display: inline-block;">Explore Collections</a>
+                    </div>
+                `;
+                cartContainer.insertAdjacentHTML("beforeend", emptyMessageHtml);
+            };
+
+            // Attach button listeners to dynamic elements
+            const attachCartListeners = () => {
+                const itemCards = document.querySelectorAll(".cart-item-card");
+
+                itemCards.forEach(card => {
+                    const index = parseInt(card.getAttribute("data-index"));
+                    const decreaseBtn = card.querySelector(".decrease-qty");
+                    const increaseBtn = card.querySelector(".increase-qty");
+                    const removeBtn = card.querySelector(".remove-item-btn");
+
+                    if (decreaseBtn) {
+                        decreaseBtn.addEventListener("click", (e) => {
+                            e.stopPropagation();
+                            if (cart[index].qty > 1) {
+                                cart[index].qty -= 1;
+                                localStorage.setItem('mamakodal_cart', JSON.stringify(cart));
+                                renderCartItems();
+                                triggerClickCelebration(e.clientX, e.clientY);
+                            } else {
+                                // Remove item
+                                card.style.opacity = "0";
+                                card.style.transform = "scale(0.8)";
+                                setTimeout(() => {
+                                    cart.splice(index, 1);
+                                    localStorage.setItem('mamakodal_cart', JSON.stringify(cart));
+                                    renderCartItems();
+                                }, 300);
+                            }
+                        });
+                    }
+
+                    if (increaseBtn) {
+                        increaseBtn.addEventListener("click", (e) => {
+                            e.stopPropagation();
+                            cart[index].qty += 1;
+                            localStorage.setItem('mamakodal_cart', JSON.stringify(cart));
+                            renderCartItems();
+                            triggerClickCelebration(e.clientX, e.clientY);
+                        });
+                    }
+
+                    if (removeBtn) {
+                        removeBtn.addEventListener("click", (e) => {
+                            e.stopPropagation();
+                            card.style.opacity = "0";
+                            card.style.transform = "scale(0.8)";
+                            setTimeout(() => {
+                                cart.splice(index, 1);
+                                localStorage.setItem('mamakodal_cart', JSON.stringify(cart));
+                                renderCartItems();
+                            }, 300);
+                        });
+                    }
+                });
+            };
+
+            const triggerClickCelebration = (x, y) => {
+                const emojis = ['✨', '⭐'];
+                const container = document.body;
+                for (let i = 0; i < 5; i++) {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle-particle';
+                    sparkle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+                    const tx = (Math.random() - 0.5) * 80;
+                    const ty = (Math.random() - 0.5) * 80;
+                    const rot = (Math.random() - 0.5) * 360;
+                    const scaleEnd = 1.2;
+                    const duration = 0.4 + Math.random() * 0.3;
+
+                    sparkle.style.setProperty('--tx', `${tx}px`);
+                    sparkle.style.setProperty('--ty', `${ty}px`);
+                    sparkle.style.setProperty('--rot', `${rot}deg`);
+                    sparkle.style.setProperty('--scale-end', scaleEnd);
+                    sparkle.style.setProperty('--duration', `${duration}s`);
+
+                    sparkle.style.left = `${x}px`;
+                    sparkle.style.top = `${y}px`;
+                    sparkle.style.position = 'fixed';
+                    sparkle.style.pointerEvents = 'none';
+                    sparkle.style.zIndex = '9999';
+                    sparkle.style.fontSize = '16px';
+
+                    container.appendChild(sparkle);
+                    setTimeout(() => {
+                        sparkle.remove();
+                    }, duration * 1000);
+                }
+            };
+
+
+            // Initialize
+            renderCartItems();
+
+            // Handle Proceed to Pay click event
+            const payBtn = document.getElementById("pay-btn");
+            const checkoutForm = document.getElementById("checkout-form");
+            if (payBtn && checkoutForm) {
+                payBtn.addEventListener("click", () => {
+                    const isAuth = document.body.getAttribute('data-user-authenticated') === 'true';
+                    if (!isAuth) {
+                        if (window.KidsInteractivityInstance) {
+                            window.KidsInteractivityInstance.playSynthSound('chime');
+                        }
+                        // Redirect to login
+                        window.location.href = "{% url 'login' %}?next={% url 'cart' %}";
+                    } else {
+                        // Populate hidden form fields
+                        const cartDataInput = document.getElementById("cart-data-input");
+                        const totalPriceInput = document.getElementById("total-price-input");
+                        
+                        const cartJSON = localStorage.getItem('mamakodal_cart') || '[]';
+                        const finalTotalEl = document.querySelector(".final-total-price");
+                        const totalVal = finalTotalEl ? finalTotalEl.textContent.trim() : '0.00';
+
+                        cartDataInput.value = cartJSON;
+                        totalPriceInput.value = totalVal;
+
+                        // Clear cart in local storage
+                        localStorage.removeItem('mamakodal_cart');
+
+                        // Submit form
+                        checkoutForm.submit();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,156 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaKodal - Contact Our Team</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}?v=2.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body data-user-authenticated="{% if user.is_authenticated %}true{% else %}false{% endif %}"
+    data-user-stars="{% if user.is_authenticated %}{{ user.profile.stars }}{% else %}0{% endif %}"
+    data-user-level="{% if user.is_authenticated %}{{ user.profile.level }}{% else %}1{% endif %}">
+
+    <header class="navbar">
+        <div class="logo-container">
+            <div class="logo-icon">M</div>
+            <span class="logo-text">Mama<span class="text-pink">Kodal</span></span>
+        </div>
+
+        <nav class="nav-links">
+            <a href="/" class="nav-item">Home</a>
+            <a href="{% url 'collections' %}" class="nav-item">Collections</a>
+            <a href="{% url 'new_arrivals' %}" class="nav-item">New Arrivals</a>
+            <a href="{% url 'reviews' %}" class="nav-item">Reviews</a>
+            <a href="{% url 'about' %}" class="nav-item">About Us</a>
+            <a href="{% url 'contact' %}" class="nav-item">Contact</a>
+
+        </nav>
+
+        <div class="action-container">
+            <a href="{% url 'cart' %}" class="cart-btn" aria-label="Cart">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>
+            </a>
+            {% if user.is_authenticated %}
+            <div class="dropdown-wrapper">
+                <a href="{% url 'profile' %}" class="profile-btn" style="text-decoration: none;">
+                    {{ user.profile.avatar }} Profile
+                </a>
+                <div class="dropdown-menu">
+                    <div class="dropdown-inner">
+                        <a href="{% url 'profile' %}">Dashboard</a>
+                        <a href="{% url 'logout' %}">Log Out</a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <a href="{% url 'login' %}" class="profile-btn" style="text-decoration: none;">Login</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="contact-page-container bg-page-contact-cart page-transition-wrapper">
+
+        <div class="contact-hero-section">
+            <div class="badge-tag">👋 Say Hello</div>
+            <h1 class="main-page-heading">We'd Love to Hear From You</h1>
+            <p class="page-subheading">Have a question about sizing, order deliveries, or looking for product
+                suggestions? Drop us a message, and our friendly team will reply within 24 hours.</p>
+        </div>
+
+        <div class="contact-grid-wrapper">
+
+            <div class="contact-info-panel">
+
+                <div class="info-card-item">
+                    <div class="info-icon-circle bg-light-pink">✉️</div>
+                    <div class="info-card-text">
+                        <h3>Email Our Support</h3>
+                        <p>Our dedicated team is ready to assist your journey.</p>
+                        <a href="mailto:support@mamakodal.com" class="info-link color-pink">support@mamakodal.com</a>
+                    </div>
+                </div>
+
+                <div class="info-card-item">
+                    <div class="info-icon-circle bg-light-blue">📞</div>
+                    <div class="info-card-text">
+                        <h3>Call Center</h3>
+                        <p>Mon - Fri from 9am to 6pm IST.</p>
+                        <a href="tel:+91 9876543211" class="info-link color-blue">+91 98765 43211</a>
+                    </div>
+                </div>
+
+                <div class="info-card-item">
+                    <div class="info-icon-circle bg-light-purple">📍</div>
+                    <div class="info-card-text">
+                        <h3>Our Main Office</h3>
+                        <p>Come drop by our main corporate hub.</p>
+                        <span class="info-static-text">Hyderabad, Telangana, India</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="contact-form-panel">
+                <h2>Send Us a Message</h2>
+                <form action="#" method="POST" class="brand-contact-form">
+                    {% csrf_token %} <div class="form-input-row-split">
+                        <div class="input-field-group">
+                            <label for="first_name">First Name</label>
+                            <input type="text" id="first_name" name="first_name" placeholder="E.g., Ananya" required>
+                        </div>
+                        <div class="input-field-group">
+                            <label for="last_name">Last Name</label>
+                            <input type="text" id="last_name" name="last_name" placeholder="P." required>
+                        </div>
+                    </div>
+
+                    <div class="input-field-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                    </div>
+
+                    <div class="input-field-group">
+                        <label for="subject">What can we help you with?</label>
+                        <div class="select-dropdown-wrapper">
+                            <select id="subject" name="subject" required>
+                                <option value="" disabled selected>Select an option...</option>
+                                <option value="order">Order Tracking & Shipments</option>
+                                <option value="sizing">Sizing & Material Questions</option>
+                                <option value="returns">Returns & Exchanges</option>
+                                <option value="partnership">Business Partnerships</option>
+                                <option value="other">Other General Inquiries</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="input-field-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Write your message here..."
+                            required></textarea>
+                    </div>
+
+                    <button type="submit" class="form-submit-btn">Send Message &rarr;</button>
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+    {% include 'footer.html' %}
+
+    <script src="{% static 'kids-interactive.js' %}?v=2.0"></script>
+</body>
+
+</html>

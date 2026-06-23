@@ -1,0 +1,688 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MamaKodal - Your Explorer Profile</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}?v=2.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@500;700&display=swap"
+        rel="stylesheet">
+    <style>
+        .profile-layout-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+            align-items: start;
+            max-width: 1280px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .profile-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .profile-sidebar-card {
+            background-color: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 32px 24px;
+            text-align: center;
+            border: 2px solid white;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .big-avatar-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            border: 3px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 56px;
+            box-shadow: var(--shadow-sm);
+            animation: brandItemFloat 4s ease-in-out infinite;
+        }
+
+        .profile-sidebar-name {
+            font-family: var(--font-heading);
+            font-size: 22px;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .profile-sidebar-email {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-top: -8px;
+            word-break: break-all;
+        }
+
+        .profile-level-badge {
+            background-color: var(--accent-yellow-light);
+            color: var(--accent-yellow-text);
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            border-radius: var(--radius-full);
+            display: inline-block;
+        }
+
+        .profile-menu-nav {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .profile-menu-item {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 15px;
+            font-weight: 700;
+            padding: 12px 18px;
+            border-radius: var(--radius-sm);
+            background-color: rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(240, 233, 223, 0.4);
+        }
+
+        .profile-menu-item:hover, .profile-menu-item.active {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            border-color: var(--primary);
+        }
+
+        .profile-main-panel {
+            background-color: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            border: 2px solid white;
+            box-shadow: var(--shadow-md);
+            min-height: 500px;
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+            animation: cloudFloatIntro 0.5s ease-out;
+        }
+
+        .tab-title {
+            font-family: var(--font-heading);
+            font-size: 28px;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            border-bottom: 2px dashed rgba(43, 45, 66, 0.08);
+            padding-bottom: 12px;
+        }
+
+        /* Forms in profile */
+        .brand-contact-form input[type="text"],
+        .brand-contact-form input[type="email"],
+        .brand-contact-form select,
+        .brand-contact-form textarea {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            padding: 14px 18px;
+            border-radius: var(--radius-sm);
+            outline: none;
+            transition: all 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .brand-contact-form input:focus,
+        .brand-contact-form select:focus,
+        .brand-contact-form textarea:focus {
+            background-color: var(--bg-card);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .avatar-option {
+            background: var(--bg-main);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-size: 26px;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .avatar-option:hover {
+            transform: scale(1.1) rotate(2deg);
+            border-color: var(--primary-hover);
+        }
+
+        .avatar-option.selected {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            transform: scale(1.1) rotate(-3deg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Milestones layout */
+        .milestones-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .milestone-card {
+            border-radius: var(--radius-md);
+            padding: 24px 16px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            background: rgba(252, 251, 247, 0.7);
+            border: 2px solid var(--border-color);
+            opacity: 0.5;
+            filter: grayscale(1);
+            transition: all 0.3s ease;
+        }
+
+        .milestone-card.unlocked {
+            opacity: 1;
+            filter: grayscale(0);
+            background: white;
+            border-color: var(--primary-light);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .milestone-icon {
+            font-size: 36px;
+        }
+
+        .milestone-title {
+            font-family: var(--font-heading);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .milestone-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .milestone-badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+            text-transform: uppercase;
+        }
+
+        .badge-locked {
+            background-color: var(--text-muted);
+            color: white;
+        }
+
+        .badge-unlocked {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        /* Order items list */
+        .order-card {
+            border: 1px solid rgba(240, 233, 223, 0.6);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            background-color: var(--bg-main);
+            margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(240, 233, 223, 0.8);
+            padding-bottom: 12px;
+        }
+
+        .order-meta-info {
+            display: flex;
+            gap: 24px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .order-meta-info span strong {
+            color: var(--text-primary);
+        }
+
+        .status-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            text-transform: uppercase;
+        }
+
+        .status-preparing {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+        }
+
+        .status-shipped {
+            background-color: var(--accent-blue-light);
+            color: var(--accent-blue-dark);
+        }
+
+        .order-items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .order-item-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .order-item-img {
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-sm);
+            object-fit: cover;
+            border: 1px solid var(--border-color);
+        }
+
+        .order-item-details {
+            flex-grow: 1;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .order-item-qty {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body data-user-authenticated="true" data-user-stars="{{ profile.stars }}" data-user-level="{{ profile.level }}">
+
+    <header class="navbar">
+        <a href="/" class="logo-container" style="text-decoration: none;">
+            <div class="logo-icon">M</div>
+            <span class="logo-text">Mama<span class="text-pink">Kodal</span></span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="/" class="nav-item">Home</a>
+            <a href="{% url 'collections' %}" class="nav-item">Collections</a>
+            <a href="{% url 'new_arrivals' %}" class="nav-item">New Arrivals</a>
+            <a href="{% url 'reviews' %}" class="nav-item">Reviews</a>
+            <a href="{% url 'about' %}" class="nav-item">About Us</a>
+            <a href="{% url 'contact' %}" class="nav-item">Contact</a>
+        </nav>
+
+        <div class="action-container">
+            <a href="{% url 'cart' %}" class="cart-btn" aria-label="Cart">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>
+            </a>
+            
+            <div class="dropdown-wrapper">
+                <a href="{% url 'profile' %}" class="profile-btn active" style="text-decoration: none;">
+                    {{ profile.avatar }} Profile
+                </a>
+                <div class="dropdown-menu">
+                    <div class="dropdown-inner">
+                        <a href="{% url 'profile' %}">Dashboard</a>
+                        <a href="{% url 'logout' %}">Log Out</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="contact-page-container bg-page-contact-cart page-transition-wrapper" style="padding-top: 40px; padding-bottom: 80px;">
+        <div class="profile-layout-grid">
+            
+            <!-- SIDEBAR -->
+            <div class="profile-sidebar">
+                <div class="profile-sidebar-card">
+                    <div class="big-avatar-circle" id="sidebar-avatar">{{ profile.avatar }}</div>
+                    <div>
+                        <h2 class="profile-sidebar-name">{{ request.user.first_name }} {{ request.user.last_name }}</h2>
+                        <span style="font-size: 13px; font-weight: 700; color: var(--text-muted); display: block; margin-top: 2px;">@{{ request.user.username }}</span>
+                    </div>
+                    <span class="profile-sidebar-email">{{ request.user.email }}</span>
+                    <span class="profile-level-badge">🌈 Level {{ profile.level }} Explorer</span>
+                    
+                    <hr style="width: 100%; border: none; border-top: 1px solid rgba(240, 233, 223, 0.8); margin: 6px 0;">
+                    
+                    <ul class="profile-menu-nav">
+                        <li>
+                            <button class="profile-menu-item active" data-target="panel-info">
+                                👤 Edit Info
+                            </button>
+                        </li>
+                        <li>
+                            <button class="profile-menu-item" data-target="panel-rewards">
+                                🌟 Explorer Stars
+                            </button>
+                        </li>
+                        <li>
+                            <button class="profile-menu-item" data-target="panel-orders">
+                                📦 Order History
+                            </button>
+                        </li>
+                        <li>
+                            <a href="{% url 'logout' %}" class="profile-menu-item" style="color: #e53e3e; border-color: rgba(229, 62, 62, 0.15); background-color: rgba(229, 62, 62, 0.02);">
+                                🚪 Log Out
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- MAIN PANEL -->
+            <div class="profile-main-panel">
+                
+                <!-- PANEL 1: EDIT INFO -->
+                <div class="tab-panel active" id="panel-info">
+                    <h2 class="tab-title">Update Your Explorer Details</h2>
+                    
+                    <form method="POST" class="brand-contact-form" id="profile-form">
+                        {% csrf_token %}
+                        
+                        <div class="form-input-row-split">
+                            <div class="input-field-group">
+                                <label for="id_first_name">First Name</label>
+                                {{ form.first_name }}
+                            </div>
+                            <div class="input-field-group">
+                                <label for="id_last_name">Last Name</label>
+                                {{ form.last_name }}
+                            </div>
+                        </div>
+
+                        <div class="form-input-row-split">
+                            <div class="input-field-group">
+                                <label for="id_phone">Phone Number</label>
+                                {{ form.phone }}
+                            </div>
+                            <div class="input-field-group">
+                                <label for="id_avatar">Choose Profile Avatar</label>
+                                <!-- Hide standard select field -->
+                                <div style="display: none;">
+                                    {{ form.avatar }}
+                                </div>
+                                <!-- Display interactive emoji picker grid -->
+                                <div class="avatar-grid" id="avatar-picker-grid">
+                                    <div class="avatar-option {% if profile.avatar == '🦖' %}selected{% endif %}" data-value="🦖">🦖</div>
+                                    <div class="avatar-option {% if profile.avatar == '🧸' %}selected{% endif %}" data-value="🧸">🧸</div>
+                                    <div class="avatar-option {% if profile.avatar == '🦄' %}selected{% endif %}" data-value="🦄">🦄</div>
+                                    <div class="avatar-option {% if profile.avatar == '🎈' %}selected{% endif %}" data-value="🎈">🎈</div>
+                                    <div class="avatar-option {% if profile.avatar == '🫧' %}selected{% endif %}" data-value="🫧">🫧</div>
+                                    <div class="avatar-option {% if profile.avatar == '🌟' %}selected{% endif %}" data-value="🌟">🌟</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="input-field-group">
+                            <label for="id_address">Shipping Address</label>
+                            {{ form.address }}
+                        </div>
+
+                        <button type="submit" class="form-submit-btn" style="padding: 14px 36px; margin-top: 10px;">
+                            Save Settings
+                        </button>
+                    </form>
+                </div>
+
+                <!-- PANEL 2: REWARDS -->
+                <div class="tab-panel" id="panel-rewards">
+                    <h2 class="tab-title">Explorer Rewards Hub</h2>
+                    
+                    <div style="background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent-blue-light) 100%); padding: 32px; border-radius: var(--radius-md); display: flex; flex-direction: column; gap: 20px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); margin-bottom: 40px; text-align: center; align-items: center;">
+                        <span style="font-size: 56px; animation: brandItemFloat 4s ease-in-out infinite; display: inline-block;">🌟</span>
+                        <div>
+                            <h3 style="font-family: var(--font-heading); font-size: 26px; color: var(--text-primary); margin-bottom: 6px;">Level {{ profile.level }} Explorer</h3>
+                            <p style="color: var(--text-secondary); font-size: 15px; font-weight: 600;">You have collected <strong style="color: var(--primary-dark); font-size: 18px;">{{ profile.stars }}</strong> explorer stars!</p>
+                        </div>
+                        
+                        <!-- Progress bar -->
+                        <div style="width: 100%; max-width: 450px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px;">
+                                <span>Level Progress</span>
+                                <span>{{ profile.stars }} / 100 points</span>
+                            </div>
+                            <div style="width: 100%; height: 16px; background-color: rgba(255, 255, 255, 0.7); border-radius: var(--radius-full); overflow: hidden; border: 1.5px solid var(--border-color); padding: 2px; box-sizing: border-box;">
+                                <div style="height: 100%; width: {{ profile.stars }}%; background: linear-gradient(to right, var(--primary), var(--secondary)); border-radius: var(--radius-full); transition: width 0.5s ease-out;"></div>
+                            </div>
+                        </div>
+                        <p style="font-size: 13px; font-weight: 600; color: var(--text-secondary); line-height: 1.4; max-width: 400px; margin: 0;">Pop floating balloons, click stars, add products to cart, and make orders to gain stars and level up!</p>
+                    </div>
+
+                    <h3 style="font-family: var(--font-heading); font-size: 20px; color: var(--text-primary); border-bottom: 2px dashed rgba(43, 45, 66, 0.06); padding-bottom: 8px; margin-bottom: 16px;">Explorer Milestones</h3>
+                    <div class="milestones-grid">
+                        
+                        <!-- MILESTONE 1: TINY EXPLORER (LEVEL >= 1) -->
+                        <div class="milestone-card unlocked" id="ms-1">
+                            <span class="milestone-icon">🦖</span>
+                            <span class="milestone-title">Tiny Explorer</span>
+                            <p class="milestone-desc">Began the adventure on MamaKodal.</p>
+                            <span class="milestone-badge badge-unlocked">Unlocked</span>
+                        </div>
+
+                        <!-- MILESTONE 2: STAR CHASER (LEVEL >= 2) -->
+                        <div class="milestone-card {% if profile.level >= 2 %}unlocked{% endif %}" id="ms-2">
+                            <span class="milestone-icon">🌟</span>
+                            <span class="milestone-title">Star Chaser</span>
+                            <p class="milestone-desc">Reached Explorer Level 2 by collecting points.</p>
+                            <span class="milestone-badge {% if profile.level >= 2 %}badge-unlocked{% else %}badge-locked{% endif %}">
+                                {% if profile.level >= 2 %}Unlocked{% else %}Locked (Lv.2){% endif %}
+                            </span>
+                        </div>
+
+                        <!-- MILESTONE 3: UNICORN BUDDY (LEVEL >= 3) -->
+                        <div class="milestone-card {% if profile.level >= 3 %}unlocked{% endif %}" id="ms-3">
+                            <span class="milestone-icon">🦄</span>
+                            <span class="milestone-title">Unicorn Buddy</span>
+                            <p class="milestone-desc">Reached Explorer Level 3 and made friends with magic.</p>
+                            <span class="milestone-badge {% if profile.level >= 3 %}badge-unlocked{% else %}badge-locked{% endif %}">
+                                {% if profile.level >= 3 %}Unlocked{% else %}Locked (Lv.3){% endif %}
+                            </span>
+                        </div>
+
+                        <!-- MILESTONE 4: BALLOON POPPER (LEVEL >= 4) -->
+                        <div class="milestone-card {% if profile.level >= 4 %}unlocked{% endif %}" id="ms-4">
+                            <span class="milestone-icon">🎈</span>
+                            <span class="milestone-title">Balloon Popper</span>
+                            <p class="milestone-desc">Reached Explorer Level 4. A master of balloon popping!</p>
+                            <span class="milestone-badge {% if profile.level >= 4 %}badge-unlocked{% else %}badge-locked{% endif %}">
+                                {% if profile.level >= 4 %}Unlocked{% else %}Locked (Lv.4){% endif %}
+                            </span>
+                        </div>
+
+                        <!-- MILESTONE 5: SUPER SHOPPER (ORDERS >= 1) -->
+                        <div class="milestone-card {% if orders.count >= 1 %}unlocked{% endif %}" id="ms-5">
+                            <span class="milestone-icon">🎒</span>
+                            <span class="milestone-title">Super Shopper</span>
+                            <p class="milestone-desc">Placed your first order for tiny treasures.</p>
+                            <span class="milestone-badge {% if orders.count >= 1 %}badge-unlocked{% else %}badge-locked{% endif %}">
+                                {% if orders.count >= 1 %}Unlocked{% else %}Locked (1 Order){% endif %}
+                            </span>
+                        </div>
+
+                        <!-- MILESTONE 6: GOLDEN CUSTOMER (ORDERS >= 3) -->
+                        <div class="milestone-card {% if orders.count >= 3 %}unlocked{% endif %}" id="ms-6">
+                            <span class="milestone-icon">🏆</span>
+                            <span class="milestone-title">Golden Customer</span>
+                            <p class="milestone-desc">Completed 3 shopping adventures on MamaKodal.</p>
+                            <span class="milestone-badge {% if orders.count >= 3 %}badge-unlocked{% else %}badge-locked{% endif %}">
+                                {% if orders.count >= 3 %}Unlocked{% else %}Locked (3 Orders){% endif %}
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- PANEL 3: ORDERS -->
+                <div class="tab-panel" id="panel-orders">
+                    <h2 class="tab-title">Your Order History</h2>
+                    
+                    {% if orders %}
+                        {% for order in orders %}
+                            <div class="order-card">
+                                <div class="order-header">
+                                    <div class="order-meta-info">
+                                        <span>Order Number: <strong>{{ order.order_number }}</strong></span>
+                                        <span>Date: <strong>{{ order.created_at|date:"F d, Y" }}</strong></span>
+                                        <span>Total: <strong style="color: var(--primary-dark);">Rs.{{ order.total_price }}</strong></span>
+                                    </div>
+                                    <span class="status-badge {% if order.status == 'Preparing Shipment' %}status-preparing{% else %}status-shipped{% endif %}">
+                                        {{ order.status }}
+                                    </span>
+                                </div>
+
+                                <div class="order-items-list">
+                                    {% for item in order.get_items %}
+                                        <div class="order-item-row">
+                                            <img src="{{ item.imgUrl }}" alt="{{ item.title }}" class="order-item-img" onerror="this.src='https://images.unsplash.com/photo-1515488042361-404e9250afef?q=80&w=200&auto=format&fit=crop'">
+                                            <div class="order-item-details">
+                                                <span>{{ item.title }}</span>
+                                                <span class="order-item-qty">x{{ item.qty }}</span>
+                                            </div>
+                                            <span style="font-weight: 700; font-size: 14px;">{{ item.price }}</span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="white-card" style="text-align: center; display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 48px; border-radius: var(--radius-lg); margin-top: 20px;">
+                            <span style="font-size: 56px;">🎒</span>
+                            <h3 style="font-family: var(--font-heading); font-size: 24px; color: var(--text-primary); margin: 0;">No Orders Placed Yet</h3>
+                            <p style="color: var(--text-secondary); max-width: 400px; margin: 0; line-height: 1.5;">It looks like you haven't placed any orders yet. Explore our fresh collections and make your first order to unlock awesome rewards!</p>
+                            <a href="{% url 'collections' %}" class="btn-primary" style="text-decoration: none; margin-top: 8px;">Explore Collections</a>
+                        </div>
+                    {% endif %}
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    {% include 'footer.html' %}
+
+    <script src="{% static 'kids-interactive.js' %}?v=2.0"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const tabs = document.querySelectorAll('.profile-menu-item[data-target]');
+            const panels = document.querySelectorAll('.tab-panel');
+            const avatarSelect = document.getElementById('id_avatar');
+            const avatarOptions = document.querySelectorAll('.avatar-option');
+            const sidebarAvatar = document.getElementById('sidebar-avatar');
+
+            // --- TAB SWITCHER LOGIC ---
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const target = tab.getAttribute('data-target');
+                    
+                    // Switch active classes on buttons
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    // Switch active classes on panels
+                    panels.forEach(p => {
+                        if (p.id === target) {
+                            p.classList.add('active');
+                        } else {
+                            p.classList.remove('active');
+                        }
+                    });
+
+                    // Add chime reward sound response
+                    if (window.KidsInteractivityInstance) {
+                        window.KidsInteractivityInstance.playSynthSound('chime');
+                    }
+                });
+            });
+
+            // --- AVATAR PICKER LOGIC (FOR PROFILE UPDATE) ---
+            avatarOptions.forEach(opt => {
+                opt.addEventListener('click', () => {
+                    // Remove selected class from others
+                    avatarOptions.forEach(o => o.classList.remove('selected'));
+                    // Add selected class to this
+                    opt.classList.add('selected');
+                    // Update select field value
+                    const val = opt.getAttribute('data-value');
+                    if (avatarSelect) {
+                        avatarSelect.value = val;
+                    }
+                    
+                    // Instantly update sidebar avatar display for great UX!
+                    if (sidebarAvatar) {
+                        sidebarAvatar.textContent = val;
+                    }
+
+                    // Sparkles visual response on select
+                    if (window.KidsInteractivityInstance) {
+                        const rect = opt.getBoundingClientRect();
+                        window.KidsInteractivityInstance.spawnSparkles(rect.left + rect.width/2, rect.top + rect.height/2, 8, [val, '✨']);
+                        window.KidsInteractivityInstance.playSynthSound('chime');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
