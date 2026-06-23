@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-q==6^*io97981qxkp&+4r3vwm7jqep1+8@lngxi-rtt!0-y*^2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['baby-store-hub.onrender.com',
+    'baby-store-hub-8sug.onrender.com',
+    'localhost',
+    '127.0.0.1',]
 
 
 # Application definition
